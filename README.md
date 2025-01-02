@@ -35,7 +35,7 @@ project/
 ### 啟動專案
 1. 克隆此專案到本地：
    ```bash
-   git clone https://github.com/your-username/flask-login-page.git
+   git clone https://github.com/claire0311/flask-login-page.git
    cd flask-login-page
    ```
 2. 安裝依賴：
