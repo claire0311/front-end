@@ -1,0 +1,134 @@
+/* 全局樣式 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* 登入容器 */
+.login-container {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    text-align: center;
+}
+
+/* 標誌 */
+.logo {
+    width: 80px;
+    margin-bottom: 20px;
+}
+
+/* 標題 */
+h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+/* 輸入框群組 */
+.input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px 10px;
+    background-color: #f5f5f5;
+}
+
+.input-group .icon {
+    font-size: 18px;
+    color: #888;
+    margin-right: 10px;
+}
+
+.input-group input {
+    border: none;
+    outline: none;
+    width: 100%;
+    padding: 10px;
+    background: none;
+}
+
+/* 按鈕樣式 */
+.login-btn {
+    background-color: #8c8c8c;
+    color: white;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.login-btn:hover {
+    background-color: #666;
+}
+
+/* 鏈接群組 */
+.links {
+    margin-top: 10px;
+    color: #888;
+    font-size: 14px;
+}
+
+.links a {
+    color: #666;
+    text-decoration: none;
+}
+
+.links a:hover {
+    text-decoration: underline;
+}
+
+/* 分隔線 */
+.divider {
+    margin: 20px 0;
+    color: #ccc;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.divider:before,
+.divider:after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #ccc;
+    margin: 0 10px;
+}
+
+/* Google 按鈕 */
+.google-btn {
+    background-color: #f1f1f1;
+    color: #333;
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.google-btn img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.google-btn:hover {
+    background-color: #e2e2e2;
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登入頁面</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="login-container">
+        <!-- 頂部圖標 -->
+        <img src="{{ url_for('static', filename='icon.png') }}" alt="Logo" class="logo">
+        <h2>歡迎回來</h2>
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+        <!-- 登入表單 -->
+        <form method="POST">
+            <div class="input-group">
+                <span class="icon">&#x1F464;</span> <!-- 帳號圖標 -->
+                <input type="text" name="username" placeholder="帳號" required>
+            </div>
+            <div class="input-group">
+                <span class="icon">&#x1F512;</span> <!-- 密碼圖標 -->
+                <input type="password" name="password" placeholder="密碼" required>
+            </div>
+            <button type="submit" class="login-btn">登入</button>
+        </form>
+        <!-- 註冊與忘記密碼 -->
+        <div class="links">
+            <a href="#">註冊帳號</a> | <a href="#">忘記密碼？</a>
+        </div>
+        <!-- 分隔線 -->
+        <div class="divider">或</div>
+        <!-- Google 按鈕 -->
+        <button class="google-btn">
+            <img src="{{ url_for('static', filename='google-icon.png') }}" alt="Google Icon">
+            使用 Google 帳戶繼續
+        </button>
+    </div>
+</body>
+</html>
