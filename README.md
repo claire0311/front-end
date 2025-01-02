@@ -52,5 +52,7 @@ project/
    ```
 
 [app.py程式碼](https://github.com/claire0311/front-end/blob/main/app.py)
+
 [static資料夾](https://github.com/claire0311/front-end/tree/main/static)
 
+[templates資料夾](https://github.com/claire0311/front-end/tree/main/templates)
