@@ -5,6 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>登入頁面</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- Firebase 初始化 -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-auth.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyC5cSTcq4zneqLjE7V3_VA2FWaEmqXbjDQ",
+            authDomain: "myloginproject-8e6fe.firebaseapp.com",
+            projectId: "myloginproject-8e6fe",
+            storageBucket: "myloginproject-8e6fe.firebasestorage.app",
+            messagingSenderId: "821101751618",
+            appId: "1:821101751618:web:c0bc680562af45268aecdb",
+            measurementId: "G-3BHDBMXXY3"
+        };
+
+        // 初始化 Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Google 登入功能
+        function googleLogin() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider)
+                .then((result) => {
+                    result.user.getIdToken().then((idToken) => {
+                        // 發送 ID Token 到後端
+                        fetch('/google-login', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ idToken }),
+                        })
+                        .then(response => response.json())
+                        .then(data => alert(data.message || data.error))
+                        .catch(error => console.error('錯誤:', error));
+                    });
+                })
+                .catch((error) => {
+                    console.error("登入失敗：", error.message);
+                    alert("Google 登入失敗，請稍後再試！");
+                });
+        }
+    </script>
 </head>
 <body>
     <div class="login-container">
@@ -33,7 +76,7 @@
         <!-- 分隔線 -->
         <div class="divider">或</div>
         <!-- Google 按鈕 -->
-        <button class="google-btn">
+        <button class="google-btn" onclick="googleLogin()">
             <img src="{{ url_for('static', filename='google-icon.png') }}" alt="Google Icon">
             使用 Google 帳戶繼續
         </button>
