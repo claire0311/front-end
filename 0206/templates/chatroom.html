@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聊天室 - {{ character.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 側邊選單 -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo">
+            </div>
+            <ul class="menu">
+                <li data-page="character" onclick="navigateToCharacter()">
+                    <img src="{{ url_for('static', filename='img/menu-icon1.png') }}" alt="角色圖標" class="menu-icon">
+                    首頁
+                </li>
+                <li data-page="chatroom" onclick="navigateToChatroomlist()">
+                    <img src="{{ url_for('static', filename='img/menu-icon2.png') }}" alt="聊天室圖標" class="menu-icon">
+                    聊天室
+                </li>
+                <li data-page="custom_partner" onclick="navigateToCustomPartner()">
+                    <img src="{{ url_for('static', filename='img/menu-icon5.png') }}" alt="自訂夥伴圖標" class="menu-icon">
+                    自訂夥伴
+                </li>
+                <li data-page="feedback" onclick="navigateToFeedback()">
+                    <img src="{{ url_for('static', filename='img/menu-icon3.png') }}" alt="回饋分析圖標" class="menu-icon">
+                    回饋分析
+                </li>
+                <li data-page="profile" onclick="navigateToProfile()">
+                    <img src="{{ url_for('static', filename='img/menu-icon4.png') }}" alt="個人資料圖標" class="menu-icon">
+                    個人資料
+                </li>
+            </ul>
+        </div>
+
+        <!-- 新增聊天室列表 -->
+        <div class="chat-list-container" id="chat-list">
+            <h2>聊天室列表</h2>
+            <ul id="chat-list-items">
+                {% for chat in chatrooms %}
+                <li onclick="openChat('{{ chat.name }}')">
+                    <img src="{{ url_for('static', filename='img/' + chat.image) }}" class="chat-list-avatar">
+                    <span>{{ chat.name }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+
+        <!-- 主要聊天室介面 -->
+        <div class="chat-container">
+            <div class="chat-header">
+                <img src="{{ url_for('static', filename='img/' + character.image) }}" class="chat-avatar">
+                <h2>{{ character.name }} ({{ character.nickname }})</h2>
+            </div>
+
+            <!-- 訊息區塊 -->
+            <div class="chat-messages" id="chat-messages"></div>
+
+            <!-- 訊息輸入區 -->
+            <div class="chat-input-container">
+                <input type="text" id="message-input" placeholder="請輸入訊息...">
+                <button class="send-button"><i class="fa-solid fa-paper-plane"></i></button>                
+            </div>
+
+            <!-- 離開聊天室按鈕 -->
+            <div class="exit-container">
+                <div class="exit-chat" onclick="exitChat()">
+                    <i class="fas fa-door-open"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <script>
+        function navigateToCustomPartner() {
+            window.location.href = "/custom_partner";  // 新的路由
+        }
+        function navigateToCustomPartner() {
+            window.location.href = "/custom_partner";  // 新的路由
+        }
+        let characterName = "{{ character.name }}";
+        let isProcessing = false;  // 防止重複輸入
+    
+        document.addEventListener("DOMContentLoaded", function () {
+            highlightActiveMenu();
+            startConversation();
+            setupEventListeners();
+        });
+    
+        function startConversation() {
+            addMessage(characterName, "你好，我是 " + characterName + "，我們開始聊天吧！");
+        }
+    
+        function setupEventListeners() {
+            const inputField = document.getElementById("message-input");
+            const sendButton = document.querySelector(".send-button");
+    
+            inputField.addEventListener("input", function () {
+                if (!isProcessing) {
+                    sendButton.disabled = false;
+                }
+            });
+    
+            sendButton.addEventListener("click", sendMessage);
+    
+            inputField.addEventListener("keypress", function (event) {
+                if (event.key === "Enter" && !sendButton.disabled) {
+                    sendMessage();
+                }
+            });
+        }
+    
+        function highlightActiveMenu() {
+            let currentPath = window.location.pathname;
+            if (currentPath.includes("/chatroom")) {
+                document.querySelector(`[data-page="chatroom"]`)?.classList.add("active");
+            } else if (currentPath.includes("/feedback")) {
+                document.querySelector(`[data-page="feedback"]`)?.classList.add("active");
+            } else if (currentPath.includes("/profile")) {
+                document.querySelector(`[data-page="profile"]`)?.classList.add("active");
+            } else {
+                document.querySelector(`[data-page="home"]`)?.classList.add("active");
+            }
+        }
+    
+        function sendMessage() {
+            if (isProcessing) return;  // 防止多次點擊
+    
+            let inputField = document.getElementById("message-input");
+            let sendButton = document.querySelector(".send-button");
+            let userMessage = inputField.value.trim();
+    
+            if (userMessage === "") return;
+    
+            isProcessing = true;  // 禁用輸入
+            sendButton.disabled = true;
+            inputField.disabled = true;
+            inputField.placeholder = characterName + " 正在回應...";  // 更改 placeholder 為角色名稱
+    
+            addMessage("你", userMessage);
+            inputField.value = "";
+    
+            setTimeout(() => {
+                showTypingIndicator(() => {
+                    fetch("/api/chat", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ character: characterName, message: userMessage })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.response) {
+                            removeTypingIndicator();
+                            setTimeout(() => {
+                                addTypingEffect(characterName, data.response);
+                                enableInput();
+                            }, 2000);
+                        }
+                    })
+                    .catch(error => {
+                        console.error("無法獲取 AI 回應:", error);
+                        enableInput();
+                    });
+                });
+            }, 1000);
+        }
+    
+        function enableInput() {
+            isProcessing = false;
+            let inputField = document.getElementById("message-input");
+            inputField.disabled = false;
+            document.querySelector(".send-button").disabled = false;
+            inputField.placeholder = "請輸入訊息...";  // 恢復 placeholder
+        }
+    
+        function showTypingIndicator(callback) {
+            let chatMessages = document.getElementById("chat-messages");
+            let typingIndicator = document.createElement("div");
+            typingIndicator.classList.add("message", "character-message", "typing-indicator");
+            typingIndicator.innerHTML = `<div class="message-content typing-text"></div>`;
+            chatMessages.appendChild(typingIndicator);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+    
+            let typingText = typingIndicator.querySelector(".typing-text");
+            let text = `${characterName} 正在輸入中`;
+            let index = 0;
+            let typingInterval = setInterval(() => {
+                if (index < text.length) {
+                    typingText.innerHTML += text.charAt(index);
+                    index++;
+                } else {
+                    clearInterval(typingInterval);
+                    setTimeout(callback, 2000);
+                }
+            }, 100);
+        }
+    
+        function removeTypingIndicator() {
+            let typingIndicator = document.querySelector(".typing-indicator");
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+    
+        function addTypingEffect(sender, message) {
+            let chatMessages = document.getElementById("chat-messages");
+            let messageDiv = document.createElement("div");
+            messageDiv.classList.add("message", sender === "你" ? "user-message" : "character-message");
+    
+            let contentDiv = document.createElement("div");
+            contentDiv.classList.add("message-content");
+            messageDiv.appendChild(contentDiv);
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+    
+            let index = 0;
+            let typingInterval = setInterval(() => {
+                if (index < message.length) {
+                    contentDiv.innerHTML += message.charAt(index);
+                    index++;
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                } else {
+                    clearInterval(typingInterval);
+                }
+            }, 50);
+        }
+    
+        function addMessage(sender, message) {
+            let chatMessages = document.getElementById("chat-messages");
+            let messageDiv = document.createElement("div");
+            messageDiv.classList.add("message", sender === "你" ? "user-message" : "character-message");
+            messageDiv.innerHTML = `<div class="message-content"><p>${message}</p></div>`;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    
+        function navigateToCharacter() {
+            window.location.href = "/character";
+        }
+    
+        function navigateToChatroomlist() {
+            window.location.href = "/chatroomlist";
+        }
+    
+        function navigateToProfile() {
+            window.location.href = "/profile";
+        }
+    
+        function navigateToFeedback() {
+            window.location.href = "/feedback";
+        }
+    
+        function exitChat() {
+            let confirmExit = confirm("你確定要離開聊天室嗎？");
+            if (confirmExit) {
+                window.location.href = "/";
+            }
+        }
+    
+        function openChat(chatName) {
+            window.location.href = `/chatroom/${encodeURIComponent(chatName)}`;
+        }
+    </script>
+    
+    
+</body>
+</html>

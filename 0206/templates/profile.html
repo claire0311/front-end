@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>個人資料</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- 側邊欄 -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo">
+            </div>
+            <ul class="menu">
+                <li data-page="character" onclick="navigateToCharacter()">
+                    <img src="{{ url_for('static', filename='img/menu-icon1.png') }}" alt="角色圖標" class="menu-icon">
+                    首頁
+                </li>
+                <li data-page="chatroom" onclick="navigateToChatroomlist()">
+                    <img src="{{ url_for('static', filename='img/menu-icon2.png') }}" alt="聊天室圖標" class="menu-icon">
+                    聊天室
+                </li>
+                <li data-page="custom_partner" onclick="navigateToCustomPartner()">
+                    <img src="{{ url_for('static', filename='img/menu-icon5.png') }}" alt="自訂夥伴圖標" class="menu-icon">
+                    自訂夥伴
+                </li>
+                <li data-page="feedback" onclick="navigateToFeedback()">
+                    <img src="{{ url_for('static', filename='img/menu-icon3.png') }}" alt="回饋分析圖標" class="menu-icon">
+                    回饋分析
+                </li>
+                <li data-page="profile" onclick="navigateToProfile()">
+                    <img src="{{ url_for('static', filename='img/menu-icon4.png') }}" alt="個人資料圖標" class="menu-icon">
+                    個人資料
+                </li>
+            </ul>
+        </div>
+         <!-- 主要內容 -->
+        <div class="content">
+            <div class="profile-container">
+                <div class="profile-avatar">
+                    <img id="avatarImage" src="{{ user.avatar if user.avatar else '/static/img/character1.png' }}" alt="大頭貼" class="avatar-img">
+                    <button id="editAvatarBtn" class="edit-avatar-btn">編輯大頭貼</button>
+                    <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                </div>
+
+                <div class="profile-card">
+                    <h2>個人資訊</h2>
+                    <form class="profile-form">
+                        <label>暱稱：
+                            <input type="text" name="nickname" placeholder="輸入暱稱">
+                        </label>
+                        <label>生日：
+                            <input type="date" name="birthday">
+                        </label>
+                        <label>性別：
+                            <select name="gender">
+                                <option value="male">男</option>
+                                <option value="female">女</option>
+                                <option value="other">其他</option>
+                            </select>
+                        </label>
+                    </form>
+                </div>
+
+                <div class="mbti-card">
+                    <h2>MBTI 測驗結果</h2>
+                    <label>您的性格：
+                        <select name="mbti">
+                            <option value="ISTJ">ISTJ - 負責務實</option>
+                            <option value="ISFJ">ISFJ - 溫暖照顧</option>
+                            <option value="INFJ">INFJ - 神秘理想</option>
+                            <option value="INTJ">INTJ - 戰略家</option>
+                            <option value="ISTP">ISTP - 冷靜邏輯</option>
+                            <option value="ISFP">ISFP - 自由藝術</option>
+                            <option value="INFP">INFP - 夢幻創意</option>
+                            <option value="INTP">INTP - 思考探索</option>
+                            <option value="ESTP">ESTP - 活力行動</option>
+                            <option value="ESFP">ESFP - 熱情社交</option>
+                            <option value="ENFP">ENFP - 創新表達</option>
+                            <option value="ENTP">ENTP - 爆發想法</option>
+                            <option value="ESTJ">ESTJ - 組織領導</option>
+                            <option value="ESFJ">ESFJ - 體貼關懷</option>
+                            <option value="ENFJ">ENFJ - 鼓舞者</option>
+                            <option value="ENTJ">ENTJ - 果斷領袖</option>
+                        </select>
+                    </label>
+                </div>
+
+                <div class="profile-card">
+                    <div class="interests-section">
+                        <h2>個性與愛好</h2>
+                        <div class="input-group">
+                            <label for="personality">個性</label>
+                            <input type="text" id="personality" name="personality" placeholder="輸入您的個性">
+                        </div>
+                        <div class="input-group">
+                            <label for="hobbies">愛好</label>
+                            <input type="text" id="hobbies" name="hobbies" placeholder="輸入您的愛好">
+                        </div>
+                    </div>
+                </div>                
+
+                <button class="save-profile-btn">儲存</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        function navigateToCustomPartner() {
+            window.location.href = "/custom_partner";  // 新的路由
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+            // 取得目前網址的 Path，例如 "/feedback"
+            const currentPage = window.location.pathname.replace("/", "");
+
+            // 找到對應 `data-page` 屬性的 <li>，並加上 `active` 樣式
+            document.querySelectorAll(".menu li").forEach(item => {
+                if (item.getAttribute("data-page") === currentPage) {
+                    item.classList.add("active");
+                }
+            });
+        });
+
+        let isFormDirty = false; // 標記表單是否被修改
+    
+        document.addEventListener("DOMContentLoaded", function () {
+            loadProfile(); // 頁面載入時讀取個人資料
+
+            document.querySelectorAll("input, select").forEach(input => {
+                input.addEventListener("input", () => isFormDirty = true);
+            });
+
+            document.querySelector(".save-profile-btn").addEventListener("click", function () {
+                saveProfile();
+            });
+
+            window.addEventListener("beforeunload", function (event) {
+                if (isFormDirty) {
+                    event.preventDefault();
+                    event.returnValue = "您有尚未儲存的變更，確定要離開嗎？";
+                }
+            });
+        });
+    
+        // 讀取個人資料
+        function loadProfile() {
+            fetch("/get_profile")
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                        return;
+                    }
+                    document.querySelector("input[name='nickname']").value = data.nickname || "";
+                    document.querySelector("input[name='birthday']").value = data.birthday || "";
+                    document.querySelector("select[name='gender']").value = data.gender || "male";
+                    document.querySelector("select[name='mbti']").value = data.mbti || "";
+                    document.querySelector("input[name='personality']").value = data.personality || "";
+                    document.querySelector("input[name='hobbies']").value = data.hobbies || "";
+                })
+                .catch(error => console.error("讀取個人資料失敗:", error));
+        }
+    
+        // 儲存個人資料
+        function saveProfile(callback) {
+            const profileData = {
+                nickname: document.querySelector("input[name='nickname']").value,
+                birthday: document.querySelector("input[name='birthday']").value,
+                gender: document.querySelector("select[name='gender']").value,
+                mbti: document.querySelector("select[name='mbti']").value,
+                personality: document.querySelector("input[name='personality']").value,
+                hobbies: document.querySelector("input[name='hobbies']").value
+            };
+
+            fetch("/save_profile", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(profileData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert("個人資料儲存成功！");
+                    isFormDirty = false;
+                    if (callback) callback();
+                } else {
+                    alert("儲存失敗：" + data.error);
+                }
+            })
+            .catch(error => console.error("儲存個人資料失敗:", error));
+        }
+    
+        // 頁面導航函式
+        function navigateToFeedback() {
+            navigateWithSaveCheck("/feedback");
+        }
+        function navigateToChatroomlist() {
+            navigateWithSaveCheck("/chatroomlist");
+        }
+    
+        function navigateToCharacter() {
+            navigateWithSaveCheck("/character");
+        }
+    
+        function navigateToProfile() {
+            navigateWithSaveCheck("/profile");
+        }
+    
+        // 確認是否儲存後跳轉
+        function navigateWithSaveCheck(targetURL) {
+            if (isFormDirty) {
+                let confirmLeave = confirm("您有尚未儲存的更改，是否儲存？");
+                if (confirmLeave) {
+                    saveProfile(() => window.location.href = targetURL);
+                } else {
+                    window.location.href = targetURL;
+                }
+            } else {
+                window.location.href = targetURL;
+            }
+        }
+    
+        // 頭像預覽與上傳
+        function previewAvatar(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById("avatar-img").src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+    
+                const formData = new FormData();
+                formData.append("avatar", file);
+    
+                fetch("/upload-avatar", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.url) {
+                        document.getElementById("avatar-img").src = data.url;
+                    }
+                })
+                .catch(error => console.error("上傳失敗:", error));
+            }
+        }
+    
+        function triggerFileInput() {
+            document.getElementById("avatar-input").click();
+        }
+    
+        document.getElementById("editAvatarBtn").addEventListener("click", function () {
+            document.getElementById("avatarInput").click();
+        });
+    
+        document.getElementById("avatarInput").addEventListener("change", function () {
+            let file = this.files[0];
+            if (!file) return;
+    
+            let formData = new FormData();
+            formData.append("avatar", file);
+    
+            fetch("/upload_avatar", {
+                method: "POST",
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.avatar) {
+                    document.getElementById("avatarImage").src = data.avatar;
+                } else {
+                    alert(data.error || "上傳失敗");
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    
+        // 切換聊天室列表顯示
+        function toggleChatList() {
+            let chatList = document.getElementById("chat-list");
+            if (chatList.style.display === "none" || chatList.style.display === "") {
+                chatList.style.display = "block";
+            } else {
+                chatList.style.display = "none";
+            }
+        }
+    
+        function openChat(chatName) {
+            window.location.href = `/chatroom/${chatName}`;
+        }
+    </script>
+    
+</body>
+</html>

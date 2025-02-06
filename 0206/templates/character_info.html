@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ character.name }} - 角色資訊</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 側邊選單 -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo">
+            </div>
+            <ul class="menu">
+                <li class="info-current-page">
+                    <img src="{{ url_for('static', filename='img/menu-icon1.png') }}" alt="角色資訊圖標" class="menu-icon">
+                    角色資訊：{{ character.name }}
+                </li>                
+                <li data-page="chatroom" onclick="navigateToChatroomlist()">
+                    <img src="{{ url_for('static', filename='img/menu-icon2.png') }}" alt="聊天室圖標" class="menu-icon">
+                    聊天室
+                </li>
+                <li data-page="custom_partner" onclick="navigateToCustomPartner()">
+                    <img src="{{ url_for('static', filename='img/menu-icon5.png') }}" alt="自訂夥伴圖標" class="menu-icon">
+                    自訂夥伴
+                </li>
+                <li data-page="feedback" onclick="navigateToFeedback()">
+                    <img src="{{ url_for('static', filename='img/menu-icon3.png') }}" alt="回饋分析圖標" class="menu-icon">
+                    回饋分析
+                </li>
+                <li data-page="profile" onclick="navigateToProfile()">
+                    <img src="{{ url_for('static', filename='img/menu-icon4.png') }}" alt="個人資料圖標" class="menu-icon">
+                    個人資料
+                </li>                             
+            </ul> 
+        </div>
+
+        <!-- 主要內容 -->
+        <div class="character-info-container">
+            <button class="prev-character" onclick="prevCharacter()">&#9665;</button> <!-- 左切換 -->
+            
+            <!-- 角色圖片 -->
+            <div class="character-fullbody">
+                <img id="character-image" src="{{ url_for('static', filename='img/fullbody/ avatar.png') }}" alt="角色全身照">
+                <h3 id="character-name">{{ character.name }}</h3>
+            </div>
+
+            <!-- 角色資訊 -->
+            <div class="info-section">
+                <div class="info-box">
+                    <div class="info-row"><h3>暱稱：</h3> <p id="character-nickname">{{ character.nickname }}</p></div>
+                    <div class="info-row"><h3>年齡：</h3> <p id="character-age">{{ character.age }}</p></div>
+                    <div class="info-row"><h3>職業：</h3> <p id="character-job">{{ character.job }}</p></div>
+                </div>
+                
+                <div class="info-box">
+                    <div class="info-row"><h3>個性：</h3> <p id="character-personality">{{ character.personality }}</p></div>
+                    <div class="info-row"><i class="fas fa-lightbulb small-icon"></i><p id="personality-desc1">{{ character.personality_desc1 }}</p></div>
+                    <div class="info-row"><i class="fas fa-lightbulb small-icon"></i><p id="personality-desc2">{{ character.personality_desc2 }}</p></div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-row"><h3>愛好：</h3> <p id="character-hobbies">{{ character.hobbies }}</p></div>
+                    <div class="info-row"><i class="fas fa-star small-icon"></i><p id="hobby-desc1">{{ character.hobby_desc1 }}</p></div>
+                    <div class="info-row"><i class="fas fa-star small-icon"></i><p id="hobby-desc2">{{ character.hobby_desc2 }}</p></div>
+                </div>
+            </div>
+
+            <button class="next-character" onclick="nextCharacter()">&#9655;</button> <!-- 右切換 -->
+        </div>
+    </div>
+    <!-- 右下角聊天室按鈕 -->
+    <div class="bottom-right-icons">
+        <div class="chat-icon" onclick="navigateToChatroom()">
+            <i class="fas fa-comments"></i>
+        </div>
+    </div>
+
+    <!-- 左下角首頁按鈕 -->
+    <div class="bottom-left-icon">
+        <div class="home-icon" onclick="navigateToHome()">
+            <i class="fas fa-home"></i>
+        </div>
+    </div>
+
+
+    <script>
+        function navigateToCustomPartner() {
+            window.location.href = "/custom_partner";  // 新的路由
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+            checkLoginStatus();
+            highlightCurrentPage();
+        });
+            /* 🔍 檢查使用者登入狀態 */
+        function checkLoginStatus() {
+                fetch("/check_login")
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("登入狀態:", data);  // 🔍 確認後端回應的資料
+                        window.isLoggedIn = !!data.logged_in; // 強制轉換為布林值
+                        let btn = document.getElementById("loginLogoutBtn");
+                        if (data.logged_in) {
+                            btn.innerText = "登出";
+                            btn.onclick = confirmLogout;
+
+                            // ✅ **登入後歡迎提示**
+                            let isFirstVisit = sessionStorage.getItem("firstVisit") !== "false";
+                            if (isFirstVisit) {
+                                alert(`歡迎回來，${data.username}！`);
+                                sessionStorage.setItem("firstVisit", "false");  // 避免重複提示
+                            }
+                        } else {
+                            btn.innerText = "登入";
+                            btn.onclick = () => window.location.href = "/login";
+                            sessionStorage.setItem("firstVisit", "true");  // 登出時重置
+                        }
+
+                        // 記錄登入狀態
+                        window.isLoggedIn = data.logged_in;
+                    })
+                    .catch(error => console.error("❌ 無法檢查登入狀態:", error));
+            }
+            let characters = []; // 存放角色資料
+            let currentIndex = 0;
+
+            function fetchCharacters() {
+                fetch("/api/characters") 
+                    .then(response => response.json())
+                    .then(data => {
+                        characters = data;
+                        updateCharacterInfo(); 
+                    })
+                    .catch(error => console.error("無法載入角色資料:", error));
+            }
+
+            function updateCharacterInfo() {
+                if (characters.length === 0) return;
+                let character = characters[currentIndex];
+
+                document.getElementById("character-image").src = "/static/img/fullbody/avatar.png" ;
+                document.getElementById("character-name").textContent = character.name;
+                document.getElementById("character-nickname").textContent = character.nickname;
+                document.getElementById("character-age").textContent = character.age;
+                document.getElementById("character-job").textContent = character.job;
+                document.getElementById("character-personality").textContent = character.personality;
+                document.getElementById("personality-desc1").textContent = character.personality_desc1;
+                document.getElementById("personality-desc2").textContent = character.personality_desc2;
+                document.getElementById("character-hobbies").textContent = character.hobbies;
+                document.getElementById("hobby-desc1").textContent = character.hobby_desc1;
+                document.getElementById("hobby-desc2").textContent = character.hobby_desc2;
+                // ✅ **更新網址**
+                window.history.pushState(null, "", "/character-info/" + encodeURIComponent(character.name));
+
+                // ✅ **更新左側選單的標題**
+                let sidebarTitle = document.querySelector(".info-current-page");
+                if (sidebarTitle) {
+                    sidebarTitle.innerHTML = `<img src="/static/img/menu-icon1.png" alt="角色資訊圖標" class="menu-icon"> 角色資訊：${character.name}`;
+                }
+            }
+
+            function prevCharacter() {
+                currentIndex = (currentIndex - 1 + characters.length) % characters.length;
+                updateCharacterInfo();
+            }
+
+            function nextCharacter() {
+                currentIndex = (currentIndex + 1) % characters.length;
+                updateCharacterInfo();
+            }
+
+            document.addEventListener("DOMContentLoaded", fetchCharacters);
+            function navigateToChatroom() {
+                if (!window.isLoggedIn) {
+                    alert("❌ 你必須先回首頁登入才能進入聊天室！");
+                    return;
+                }
+                let characterName = document.getElementById("character-name").textContent.trim();
+                window.location.href = "/chatroom/" + encodeURIComponent(characterName);
+            }
+            // 跳轉到首頁
+            function navigateToHome() {
+                window.location.href = "/";
+            }
+
+            function navigateToChatroomlist(){
+                if (!window.isLoggedIn) {
+                    alert("❌ 你必須先回首頁登入才能查看聊天室列表！");
+                    return;
+                }
+                window.location.href = "/chatroomlist"; // 指定跳轉的網址
+            }
+
+            function navigateToFeedback(){
+                if (!window.isLoggedIn) {
+                    alert("❌ 你必須先回首頁登入才能查看回饋分析！");
+                    return;
+                }
+                window.location.href = "/feedback"; // 指定跳轉的網址
+            }
+
+            function navigateToProfile(){
+                if (!window.isLoggedIn) {
+                    alert("❌ 你必須先回首頁登入才能查看個人資料！");
+                    return;
+                }
+                window.location.href = "/profile";
+            }
+
+
+    </script>
+</body>
+</html>

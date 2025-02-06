@@ -1,0 +1,1542 @@
+/* 全局樣式 */
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #fbc2eb, #a6c1ee);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+/* 登入容器 */
+.login-container {
+    background: linear-gradient(145deg, #ffffff, #e6e6e6); /* 亮面漸變 */
+    padding: 1.563vw;
+    border-radius: 0.625vw;
+    box-shadow: 0 0.208vw 0.313vw rgba(0, 0, 0, 0.1); /* 淡淡陰影 */
+    width: 18.229vw;
+    text-align: center;
+    border: 1px solid #ddd; /* 輕微邊框 */
+}
+
+/* 標誌 */
+.logo {
+    width: 4.167vw;
+    margin-bottom: 1.042vw;
+}
+
+/* ----- 標題樣式 ----- */
+h2 {
+    font-size: 0.938vw;
+    margin-bottom: 0.521vw;
+    color: #333;
+}
+
+/* 輸入框群組 */
+.input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.781vw;
+    border: 1px solid #ddd;
+    border-radius: 0.417vw;
+    padding: 0.521vw;
+    background: linear-gradient(145deg, #f5f5f5, #e0e0e0); /* 立體背景 */
+    box-shadow: inset 3px 3px 5px rgba(0, 0, 0, 0.1), 
+                inset -3px -3px 5px rgba(255, 255, 255, 0.7); /* 內凹陰影 */
+}
+
+/* 輸入框圖示 */
+.input-group .icon {
+    font-size: 0.938vw;
+    color: #888;
+    margin-right: 0.521vw;
+}
+
+/* 輸入框樣式 */
+.input-group input {
+    border: none;
+    outline: none;
+    width: 100%;
+    padding: 0.521vw;
+    background: none;
+    font-size: 0.833vw;
+    color: #333;
+}
+
+/* 按鈕樣式 */
+.login-btn {
+    background: linear-gradient(145deg, #8c8c8c, #a0a0a0); /* 立體按鈕 */
+    color: white;
+    padding: 0.625vw;
+    width: 100%;
+    border: none;
+    border-radius: 0.417vw;
+    cursor: pointer;
+    font-size: 0.833vw;
+    margin-top: 0.521vw;
+    box-shadow: 0.208vw 0.208vw 0.416vw rgba(0, 0, 0, 0.2), 
+                -0.208vw -0.208vw 0.416vw rgba(255, 255, 255, 0.5);
+    transition: 0.2s;
+}
+
+/* 按鈕點擊時的效果 */
+.login-btn:active {
+    box-shadow: inset 0.104vw 0.104vw 0.26vw rgba(0, 0, 0, 0.3), 
+                inset -0.104vw -0.104vw 0.26vw rgba(255, 255, 255, 0.5);
+    background: linear-gradient(145deg, #7a7a7a, #999);
+}
+
+/*  按鈕懸停時的效果 */
+.login-btn:hover {
+    background-color: #666;
+}
+
+/* 鏈接群組 */
+.links {
+    margin-top: 0.521vw;
+    color: #888;
+    font-size: 0.729vw;
+}
+
+/* 鏈接樣式 */
+.links a {
+    color: #666;
+    text-decoration: none;
+}
+
+/* 鏈接懸停樣式 */
+.links a:hover {
+    text-decoration: underline;
+}
+
+
+
+/* 錯誤訊息 */
+.error-message {
+    background: #ffe6e6;
+    border: 1px solid #ff5c5c;
+    padding: 0.521vw;
+    color: #d8000c;
+    font-weight: bold;
+    border-radius: 0.26vw;
+    text-align: center;
+    margin-bottom: 0.781vw;
+}
+
+
+/*主頁面：角色頁面*/
+
+/* 容器配置 */
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+/* 側邊選單 */
+.sidebar {
+    width: 18.229vw;
+    background-color: #eae6f7;
+    color: #333333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 1.042vw;
+    height: 100vh;
+    border-right: 0.104vw solid #ddd;
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow-y: auto;
+}
+
+/* 側邊選單標題 */
+.sidebar .logo img {
+    width: 80%;
+    margin-bottom: 1.042vw;
+}
+/* 當前頁面 (active) 變色效果 */
+.menu li.active {
+    background: linear-gradient(to left, #ff9a9e, #fad0c4);
+    font-weight: bold;
+    color: white;
+}
+
+/* 側邊選單選項 */
+.sidebar .menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    text-align: left;
+}
+
+/*  選項樣式 */
+.sidebar .menu li {
+    display: flex;
+    align-items: center;
+    padding: 0.938vw 1.563vw;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+    transition: background 0.3s ease;
+    font-size: 0.938vw;
+}
+
+/* 選項圖示 */
+.sidebar .menu li img {
+    width: 1.302vw; /* 確保圖示大小統一 */
+    margin-right: 0.781vw;
+}
+
+/* 選項文字 */
+.sidebar .menu li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 0.938vw;
+    display: block;
+}
+
+/* 選項懸停樣式 */
+.sidebar .menu li:hover {
+    background-color: #f0f0f0;
+    border-radius: 0.26vw;
+}
+
+
+/* 主要內容區 */
+.main-content {
+    flex-grow: 1; /* 讓主內容填滿剩餘空間 */
+    margin-left: 15.625vw; /* 確保主內容不會蓋住 sidebar */
+    padding: 1.042vw;
+}
+
+.main-content h1{
+    text-align: center; /* 置中對齊 */
+    font-size: 2.083vw; /* 字體放大 */
+    font-weight: bold; /* 粗體 */
+    background: linear-gradient(90deg, #D6336C, #6C3483); /* 深色漸變 */
+    -webkit-background-clip: text; /* 讓背景只作用於文字 */
+    -webkit-text-fill-color: transparent; /* 讓文字變透明以顯示背景漸變 */
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3); /* 增加陰影提高可讀性 */
+    margin-bottom: 20px; /* 與下方角色區域保持適當間距 */
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    opacity: 0; /* 初始隱藏 */
+    transform: translateY(-10px); /* 初始位置稍微上移 */
+    animation: fadeInSlideDown 0.8s ease-in-out forwards; /* 加入進場動畫 */
+}
+
+/* 進場動畫 */
+@keyframes fadeInSlideDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+/* 角色容器 - 保證卡片排列為兩個一行 */
+/* 角色卡片排版 (更緊湊的 3x2) */
+.characters {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3列固定布局 */
+    grid-template-rows: repeat(2, auto);
+    gap: 0.781vw; /* 減少間距，使畫面更緊湊 */
+    justify-content: center;
+    align-items: center;
+    width: 85%;
+    margin: auto;
+}
+
+/* 角色卡片樣式 */
+.character-card {
+    width: 14vw;
+    height: 36vh;
+    text-align: center;
+    border: 0.104vw solid #ccc;
+    border-radius: 0.521vw;
+    padding: 0.781vw;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative; /* 讓tooltip能定位 */
+    transition: transform 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+/* 角色卡片圖片 */
+.character-card img {
+    width: 4.688vw;
+    height: 9vh;
+    border-radius: 50%;
+    margin: 0.781vw auto;
+}
+
+/* 角色卡片標題 */
+.character-card h2 {
+    font-size: 1.25vw;
+    font-weight: bold;
+    margin-top: 0.781vw;
+}
+
+
+
+/* 卡片內文字 */
+.character-card p {
+    font-size: 0.938vw;
+    font-weight: bold;
+    color: #444;
+    margin: 0.521vw 0;
+}
+
+/* 按鈕樣式 */
+.character-card button {
+    background: linear-gradient(145deg, #888, #a0a0a0);
+    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.2), -4px -4px 6px rgba(255, 255, 255, 0.5);
+    padding: 0.625vw 1.042vw;
+    border: none;
+    border-radius: 0.417vw;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    font-size: 0.833vw;
+}
+
+/* 滑鼠懸停時放大 */
+.character-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0vw 0.417vw 0.625vw rgba(0, 0, 0, 0.15);
+}
+
+/* 提示文字 */
+.tooltip {
+    position: absolute;
+    bottom: 5.729vw;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.75);
+    color: white;
+    padding: 0.417vw 0.625vw;
+    border-radius: 0.313vw;
+    font-size: 0.729vw;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    white-space: nowrap;
+}
+
+
+/* 滑鼠懸停時顯示 */
+.character-card:hover .tooltip {
+    opacity: 1;
+}
+
+/* 按鈕點擊效果 */
+.character-card button:active {
+    box-shadow: inset 0.104vw 0.104vw 0.26vw rgba(0, 0, 0, 0.3),
+                inset -0.104vw -0.104vw 0.26vw rgba(255, 255, 255, 0.5);
+    background: linear-gradient(145deg, #7a7a7a, #999);
+}
+
+/* 按鈕懸停效果 */
+.character-card button:hover {
+    background: linear-gradient(145deg, #777, #999);
+}
+
+
+/* 按鈕樣式 */
+.chat-button {
+    background-color: #666;
+    color: white;
+    padding: 0.417vw 0.625vw;
+    border: none;
+    border-radius: 0.26vw;
+    cursor: pointer;
+}
+
+/* 滑鼠懸停時變色 */
+.chat-button:hover {
+    background: linear-gradient(145deg, #555, #777);
+}
+
+/* 按鈕點擊時效果 */
+.chat-button:active {
+    box-shadow: inset 0.104vw 0.104vw 0.26vw rgba(0, 0, 0, 0.3), 
+                inset -0.104vw -0.104vw 0.26vw rgba(255, 255, 255, 0.5);
+}
+
+
+/* 調整 Profile 頁面表單樣式 */
+.profile-container {
+    max-width: 31.25vw; /* 限制寬度 */
+    margin: 1.042vw auto; /* 居中顯示 */
+    background: #fff; /* 白色背景 */
+    padding: 1.042vw; /* 內部留白 */
+    border-radius: 0.521vw; /* 圓角 */
+    box-shadow: 0 0.208vw 0.521vw rgba(0, 0, 0, 0.1); /* 淡淡的陰影 */
+}
+
+/* 大頭貼置中 */
+.profile-form label {
+    display: flex;
+    justify-content: space-between; /* 左右對齊 */
+    margin-bottom: 0.781vw;
+    font-size: 0.833vw;
+}
+
+/*  輸入框樣式 */
+.profile-form input, 
+.profile-form select {
+    flex: 1; /* 填滿剩餘空間 */
+    margin-left: 0.521vw;
+}
+
+/*  按鈕樣式 */
+.profile-form input[type="text"], 
+.profile-form input[type="date"], 
+.profile-form select {
+    padding: 0.417vw; /* 內部間距 */
+    border: 1px solid #ccc; /* 淺灰邊框 */
+    border-radius: 0.26vw; /* 圓角 */
+    font-size: 0.729vw;
+}
+/* 聚焦時的樣式 */
+.profile-form input:focus, 
+.profile-form select:focus {
+    outline: none; /* 去掉外框 */
+    border-color: #007bff; /* 聚焦時顯示藍色邊框 */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* 藍色光暈 */
+}
+
+/* 儲存按鈕樣式 */
+.save-btn {
+    margin-top: 1.042vw;
+    padding: 0.521vw 0.781vw;
+    background-color: #28a745; /* 綠色背景 */
+    color: white;
+    border: none;
+    border-radius: 0.26vw;
+    cursor: pointer;
+    font-size: 0.833vw;
+    text-align: center;
+    width: 100%; /* 滿版按鈕 */
+}
+
+/* 滑鼠懸停時變色 */
+.save-btn:hover {
+    background-color: #218838; /* 加深綠色 */
+}
+
+
+/*角色資訊*/
+/* 角色資訊頁面主體 */
+.character-info-container {
+    position: relative; /* 讓內部的按鈕可以定位 */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 62.5vw;
+    height: 90vh; /* 讓內容占滿視窗，減少底部空白 */
+    margin: auto;
+    gap: 1.563vw;
+}
+
+/* 左右切換按鈕 */
+/* 左右切換按鈕 */
+.prev-character, .next-character {
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    font-size: 1.458vw;
+    padding: 0.625vw 0.833vw;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0.104vw 0.104vw 0.417vw rgba(0, 0, 0, 0.2);
+    z-index: 10; /* 確保按鈕不被其他內容遮擋 */
+}
+
+/* 按鈕懸停效果 */
+.prev-character:hover, .next-character:hover {
+    background-color: rgba(200, 200, 200, 0.9);
+    transform: scale(1.1);
+}
+
+/* 左側角色圖片 */
+.character-image {
+    flex: 1;
+    text-align: center;
+}
+
+/* 角色資訊頁面 - 調整角色圖片為全身照 */
+.character-image img {
+    width: auto;  /* 讓圖片保持原比例 */
+    height: 50vh; /* 限制最大高度，避免過大 */
+    object-fit: contain; /* 確保圖片完整顯示，不被裁切 */
+    border-radius: 0.521vw; /* 保持圖片圓角 */
+}
+
+/* 角色名稱 */
+.character-image h2 {
+    font-size: 1.146vw;
+    font-weight: bold;
+    margin-top: 0.781vw;
+}
+
+/* 右側角色資訊 */
+.character-details {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 1.563vw;
+}
+
+/* 角色全身照 (角色資訊頁面使用) */
+.character-fullbody img {
+    width: auto;
+    height: 70vh; /* 調整圖片大小 */
+    max-width: 100%;
+    object-fit: contain; /* 確保完整顯示全身 */
+    border-radius: 0.521vw;
+    display: block;
+    margin: auto;
+}
+
+/* 角色全身照區塊 */
+.character-fullbody {
+    text-align: center; /* 讓整個區塊內文字與圖片都置中 */
+}
+
+/* 角色名稱置中 */
+.character-fullbody h3 {
+    text-align: center;
+    font-size: 1.302vw;
+    font-weight: bold;
+    margin-top: 2.344vw;
+}
+
+/* 角色資訊框 - 增加行距、內邊距，提升可讀性 */
+.info-box {
+    flex: 1; /* 讓 3 個區塊均分 info-section */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* 垂直置中 */
+    align-items: flex-start; /* 讓文字左對齊 */
+    width: 100%;
+    padding: 0.781vw;
+    border: 0.104vw solid #ddd;
+    border-radius: 0.521vw;
+    background: #f9f9f9;
+    box-shadow: 0.104vw 0.104vw 0.417vw rgba(0, 0, 0, 0.1);
+}
+
+.info-current-page {
+    font-weight: bold;
+    color: white; /* 變深色強調當前頁面 */
+    pointer-events: none; /* 讓它不能點擊 */
+    background: linear-gradient(to left, #ff9a9e, #fad0c4);
+}
+
+
+
+/* 右下角聊天室按鈕 */
+.chat-icon {
+    position: fixed;
+    bottom: 1.042vw;
+    right: 1.042vw;
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    width: 2.604vw;
+    height: 5vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25vw;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    box-shadow: 0.104vw 0.104vw 0.521vw rgba(0, 0, 0, 0.2);
+    order: 1;
+}
+
+.chat-icon:hover {
+    background-color: #0056b3;
+}
+
+/* 右下角聊天室按鈕 */
+.bottom-right-icons {
+    position: fixed;
+    bottom: 1.042vw;
+    right: 1.042vw;
+}
+
+.bottom-left-icon {
+    position: fixed;
+    bottom: 1.042vw;
+    left: 1.042vw;
+}
+
+
+/* 通用按鈕樣式 */
+.bottom-right-icons div,
+.bottom-left-icon div {
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    width: 2.604vw;
+    height: 5vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25vw;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    box-shadow: 0.104vw 0.104vw 0.521vw rgba(0, 0, 0, 0.2);
+}
+
+.bottom-right-icons div:hover,
+.bottom-left-icon div:hover {
+    background-color: #0056b3;
+}
+
+
+
+/* 角色資訊標題 */
+.info-box h3 {
+    font-size: 0.938vw;
+    font-weight: bold;
+    color: #333;
+    display: block;
+}
+
+/* 角色資訊內容 */
+.info-box h4 {
+    font-size: 0.833vw;
+    font-weight: bold;
+    color: #444;
+}
+
+/* 角色資訊內容段落 */
+.info-box p {
+    flex-grow: 1; /* 讓 p 填滿剩餘空間 */
+    font-size: 0.833vw;
+    color: #555;
+}
+
+/* 角色資訊區 */
+.info-section {
+    width: 31.25vw;
+    flex: 1.5;
+    display: flex;
+    flex-direction: column;
+    gap: 0.781vw;
+    height: 100%; /* 讓內容充滿父層 */
+    margin-left: 1.563vw;
+    margin-right: 1.563vw;
+}
+
+/* 調整 h3 與 p 之間的間距 */
+.info-row {
+    display: flex;
+    align-items: center;
+    gap: 0.521vw; /* 控制 h3 和 p 之間的間距 */
+}
+
+
+
+/* 調整描述 1 & 描述 2 的樣式 */
+.description {
+    font-size: 0.781vw;
+    color: #666;
+    margin-top: 0.26vw;
+}
+
+.small-icon {
+    color: #555;  /* 圖示顏色 */
+    margin-right: 0.417vw;  /* 與文字的間距 */
+    font-size: 1vw;  /* 圖示大小 */
+}
+
+
+/*聊天室*/
+
+/* 主要聊天室介面 */
+.chat-container {
+    width: 52.083vw;  /* 調整為 75% 讓聊天視窗更寬 */
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    height: 85vh;
+    padding: 1.042vw;
+    background: white;
+    border-radius: 0.521vw;
+    box-shadow: 0 0.208vw 0.521vw rgba(0, 0, 0, 0.1);
+}
+
+/* 角色資訊區（頭像 + 名稱） */
+.chat-header {
+    display: flex;
+    align-items: center;
+    gap: 0.781vw;
+    padding: 0.521vw;
+    border-bottom: 0.104vw solid #ddd;
+}
+
+/* 角色頭像 */
+.chat-avatar {
+    width: 2.083vw;
+    height: 4vh;
+    border-radius: 50%;
+}
+
+/* 角色名稱 */
+.chat-message {
+    display: flex;
+    align-items: center;
+    max-width: 70%;  
+    margin: 0.521vw;
+    padding: 0.521vw 0.781vw;
+    border-radius: 0.625vw;
+    font-size: 0.833vw;
+    word-wrap: break-word;
+}
+
+/* 訊息區塊 */
+.chat-messages {
+    display:grid;
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 1.042vw;
+    background: #f9f9f9;
+    border-radius: 0.521vw;
+    max-width: 100%;  /* 增加聊天訊息區域的寬度 */
+}
+
+
+/* 訊息容器 */
+.message {
+    display: flex;
+    align-items: center; /* 讓頭像與文字垂直對齊 */
+    max-width: 25%;
+    padding: 0.26vw 0.625vw;
+    border-radius: 0.781vw;
+    font-size: 0.833vw;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    word-break: break-word;
+    text-align: left;
+}
+
+
+
+/* 使用者訊息（左對齊） */
+.user-message {
+    align-self: flex-end;
+    background: #b3e5fc;
+    text-align: left;
+    margin-left: auto;
+    flex-direction: row-reverse;
+}
+
+/* 角色訊息（右對齊） */
+.character-message {
+    align-self: flex-start;
+    background: #d9fdd3;
+    text-align: left;
+    margin-right: auto;
+    flex-direction: row;
+}
+
+/* 訊息輸入區 */
+.chat-input-container {
+    display: flex;
+    padding: 0.521vw;
+    border-top: 0.104vw solid #ddd;
+    background: #fff;
+    margin-top: 0.26vw;
+}
+
+/* 訊息輸入框 */
+#message-input {
+    flex-grow: 1;
+    padding: 0.521vw;
+    border: 1px solid #ccc;
+    border-radius: 0.26vw;
+}
+
+/* 發送按鈕 */
+.send-button {
+    padding: 0.521vw;
+    background: transparent;
+    border: none;
+    font-size: 1.042vw;
+    cursor: pointer;
+}
+
+/* 角色頭像 */
+.chat-avatar {
+    width: 2.604vw;
+    height: 5vh;
+    border-radius: 50%;
+    flex-shrink: 0; /* 防止頭像縮小 */
+    align-self: flex-start; /* 確保頭像對齊訊息框的頂部 */
+}
+
+/* 訊息頭像 */
+.message-avatar {
+    width: 2.083vw;
+    height: 4vh;
+    border-radius: 50%;
+    flex-shrink: 0; /* 防止頭像縮小 */
+    align-self: center; /* 讓頭像與第一行文字對齊 */
+    margin-right: 0.521vw; /* 讓頭像與文字區塊保持適當間距 */
+}
+
+/* 訊息內容 */
+.message-content {
+    padding: 0.26vw 0.26vw;
+    display: inline-block; /* 讓訊息框根據內容大小變化 */
+    border-radius: 0.521vw;
+    max-width: 100%;
+    word-break: break-word;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 訊息文字 */
+.exit-container {
+    position: fixed; /* 固定位置 */
+    bottom: 3.125vw; /* 與底部保持適當距離 */
+    right: 2.604vw; /* 讓門圖標更靠近右邊 */
+    z-index: 2000; /* 確保它不會被其他元素蓋住 */
+}
+
+/* 離開聊天室按鈕 */
+.exit-chat {
+    font-size: 1.563vw; /* 調整圖標大小 */
+    width: 2.604vw; /* 統一按鈕大小 */
+    height: 5vh; 
+    cursor: pointer;
+    color: white;
+    background-color: #ff4d4d; /* 紅色背景，提高警示感 */
+    padding: 0.521vw;
+    border-radius: 50%;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* 增加陰影，使其更突出 */
+    transition: transform 0.2s ease-in-out;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+
+/* 滑鼠懸停時，讓門變得更明顯 */
+.exit-chat:hover {
+    background-color: #cc0000; /* 更深的紅色 */
+    transform: scale(1.1); /* 稍微放大 */
+}
+
+/* 懸停時顯示 'Exit the chat' */
+.exit-chat::after {
+    content: "Exit the chat";
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    padding: 0.26vw 0.417vw;
+    border-radius: 0.26vw;
+    font-size: 0.625vw;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    pointer-events: none;
+}
+/* 滑鼠懸停時顯示 */
+.exit-chat:hover::after {
+    opacity: 1;
+}
+
+.typing-indicator .dot {
+    width: 8px;
+    height: 8px;
+    margin: 0 2px;
+    background-color: gray;
+    border-radius: 50%;
+    display: inline-block;
+    animation: typing 1.5s infinite ease-in-out;
+}
+
+.typing-indicator .dot:nth-child(1) {
+    animation-delay: 0s;
+}
+.typing-indicator .dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+.typing-indicator .dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.typing-indicator {
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+.typing-text {
+    font-style: italic;
+    font-weight: bold;
+    color: gray;
+}
+
+
+@keyframes typing {
+    0% { opacity: 0.3; }
+    50% { opacity: 1; }
+    100% { opacity: 0.3; }
+}
+
+
+/* ----- 內容區塊 ----- */
+/* 主要內容區塊 */
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* 個人資訊卡片 */
+.profile-container {
+    width: 19.271vw; /* 原本可能是 340px，增加約 10% */
+    max-width: 90%; /* 限制寬度 */
+    background: white;
+    padding: 1.536vw;
+    border-radius: 0.781vw;
+    box-shadow: 0vw 0.521vw 1.536vw rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* 大頭貼置中 */
+.profile-avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1.042vw;
+}
+
+/* ----- 頭像區塊 ----- */
+.profile-avatar img {
+    width: 6.25vw;
+    height: 12vh;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 0.208vw solid #FF7E5F;
+}
+
+/* 編輯頭像按鈕 */
+.edit-avatar-btn {
+    margin-top: 0.521vw;
+    background-color: #FFB88C; /* 柔和的粉橘色 */
+    color: #fff;
+    border: none;
+    padding: 0.417vw 0.781vw;
+    border-radius: 1.042vw;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 0.729vw;
+}
+
+/* 滑鼠懸停時變色 */
+.edit-avatar-btn:hover {
+    background-color: #FF9966; /* 懸停時顏色變深 */
+}
+
+/* ----- 卡片區塊 ----- */
+.profile-card, .mbti-card {
+    background: #fff;
+    padding: 1.042vw;
+    border-radius: 0.781vw;
+    margin: 0.781vw 0;
+    box-shadow: 0px 0.156vw 0.521vw rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+/* ----- MBTI 測驗區塊 ----- */
+.mbti-card {
+    background: #ffe4e1;
+    border: 1px solid #FFDADA;
+    padding: 1.042vw;
+    text-align: center;
+}
+
+.mbti-card select {
+    width: 100%;
+    padding: 0.521vw;
+    font-size: 0.833vw;
+    border: 0.104vw solid #FFD1D1; /* 調整邊框為較淡的粉色 */
+    border-radius: 0.417vw; /* 讓邊框更圓滑 */
+    background-color: #FFECEC; /* 讓背景顏色與整體柔和風格匹配 */
+    color: #333;
+    text-align: center;
+}
+
+.mbti-card select:focus {
+    border-color: #FF9999; /* 選中時稍微加深邊框顏色 */
+    box-shadow: 0 0 6px rgba(255, 153, 153, 0.5); /* 添加柔和陰影 */
+}
+
+/* MBTI 結果文字 */
+.mbti-result {
+    font-size: 0.938vw;
+    font-weight: bold;
+    color: #ff6b6b;
+    margin-top: 0.26vw;
+}
+
+/* ----- 按鈕區塊 ----- */
+.save-profile-btn {
+    background: #27ae60;
+    color: white;
+    padding: 0.625vw;
+    border-radius: 0.521vw;
+    font-size: 0.833vw;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    width: 100%;
+    transition: background 0.3s ease-in-out;
+    margin-top: -0.521vw;
+}
+
+.save-profile-btn:hover {
+    background: #219150;
+}
+
+/* 輸入框區塊 */
+.profile-form label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.521vw;
+    font-size: 0.729vw;
+}
+
+/* 輸入框 */
+.profile-form input, 
+.profile-form select {
+    width: 65%;
+    padding: 0.313vw;
+    border: 1px solid #ccc;
+    border-radius: 0.313vw;
+    font-size: 0.729vw;
+    background-color: #FFFFFF;
+}
+
+/* 個性與愛好區 */
+.input-group {
+    display: flex;
+    flex-direction: row; /* 讓 label 和 input 垂直排列 */
+    margin-bottom: 0.26vw;  /* 增加底部間距 */
+    border: 0.042vw solid #ccc;
+}
+
+.input-group label{
+    font-weight: bold;
+    margin-bottom: 0.26vw;  /* 讓 label 和 input 之間有間距 */
+}
+
+.input-group input {
+    width: 100%;  /* 讓 input 撐滿整個區塊 */
+    padding: 0.417vw;
+    border: 1px solid #ccc;
+    border-radius: 0.26vw;
+    background-color: #FFFFFF;
+}
+
+
+/* ----- 聊天室 ----- */
+.chat-list-container {
+    position: fixed;
+    right: 0;
+    top: 0;
+    height: 100vh;
+    width: 13.021vw;
+    background: white;
+    border-left: 1px solid #ccc;
+    padding: 1.042vw;
+    box-shadow: -0.104vw 0 0.26vw rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.chat-list-container h2 {
+    font-size: 0.938vw;
+    margin-bottom: 0.521vw;
+    text-align: center;
+}
+
+#chat-list-items {
+    list-style: none;
+    border-radius: 0.417vw;
+    transition: background 0.2s ease;
+    padding: 0.625vw 0.833vw; /* 增加內邊距，讓選單更舒適 */
+    margin-bottom: 0.417vw; /* 讓聊天室間距更均勻 */
+}
+
+#chat-list-items li {
+    display: flex;
+    align-items: center;
+    padding: 0.521vw;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#chat-list-items li:hover {
+    background-color: rgba(255, 0, 0, 0.15); /* 使用較柔和的紅色 */
+    cursor: pointer;
+}
+
+.chat-list-avatar {
+    width: 2.083vw;
+    height: 4vh;
+    border-radius: 50%;
+    margin-right: 0.521vw;
+}
+
+/* 調整當聊天室列表顯示時的佔用空間 */
+.chat-list-container.open ~ .chat-container {
+    width: calc(100% - 20.833vw);  /* 讓聊天室區域保持較大空間 */
+}
+
+/* ----- 聊天室 ----- (chatroomlist)*/
+.chatroom-list-container {
+    position: fixed; /* 固定位置 */
+    right: 0; /* 靠右側 */
+    top: 0; /* 靠頂部 */
+    width: calc(100% - 18.229vw); /* 左邊留出側邊欄的空間 */
+    height: 100vh; /* 滿版高度 */
+    background: linear-gradient(to right, #fbc2eb, #a6c1ee);
+    display: flex;
+    flex-direction: column;
+    padding: 1.042vw;
+    box-shadow: 0.104vw 4px 0.521vw rgba(0, 0, 0, 0.08);
+}
+
+.chatroom-list-container h2 {
+    font-size: 1.458vw;
+    font-weight: 600;
+    text-align: center;
+    /* 文字顏色改為漸變 */
+    color: #6A5ACD;
+    text-shadow: 0.104vw 0.104vw 0.26vw rgba(106, 90, 205, 0.3); /* 更深的陰影 */
+    /* 增加字距 & 行距 */
+    letter-spacing: 1px;
+    line-height: 1.2;
+    /* 添加圓角背景，使標題區塊更有層次 */
+    border-radius: 0.417vw;
+    display: inline-block;
+}
+
+.chatroom-list-container h2:hover {
+    background: linear-gradient(to right, #8C7EFF, #A39BFF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
+.chatroom-list-container ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.chatroom-list-container ul li {
+    background-color: #f9f9f9; /* 卡片背景色 */
+    margin-bottom: 0.781vw; /* 每個項目間距 */
+    padding: 0.521vw 0.781vw; /* 內邊距 */
+    border-radius: 0.625vw; /* 圓角 */
+    box-shadow: 0 0.104vw 0.208vw rgba(0, 0, 0, 0.1); /* 添加陰影 */
+    display: flex;
+    align-items: center;
+    transition: box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.chat-list-item:nth-child(odd) {
+    background: linear-gradient(to right, #D6E6FF, #EFF6FF);
+}
+
+.chat-list-item:nth-child(even) {
+    background: linear-gradient(to right, #F8D7DA, #FAE3E6);
+}
+
+.chatroom-list-container ul li:hover {
+    background-color: #e0f7fa; /* 淡藍色背景 */
+    transform: scale(1.02); /* 微微放大 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 添加陰影 */
+    transition: all 0.3s ease; /* 過渡動畫 */
+}
+
+
+.chatroom-list-container ul li:active {
+    transform: scale(0.98); /* 按壓時微縮 */
+    background-color: #b2ebf2; /* 改變背景顏色 */
+    transition: transform 0.2s ease; /* 平滑過渡 */
+}
+
+.chatroom-list-container ul li span {
+    font-weight: bold;
+    font-size: 0.833vw;
+    color: #333; /* 深色字體 */
+}
+
+.chatroom-list-avatar {
+    width: 2.604vw;
+    height: 5vh;
+    border-radius: 50%;
+    margin-right: 0.781vw;
+    border: 0.104vw solid #fff; /* 白色邊框 */
+    transition: border-color 0.3s ease; /* 邊框變化動畫 */
+}
+
+.chatroom-list-avatar :hover{
+    border-color: #80d8ff; /* 懸停時變成亮藍色 */
+}
+#chatroom-list-items {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto; /* 可滾動 */
+    height: calc(100% - 5vh); /* 保留標題區域 */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 0.521vw; /* 圓角 */
+}
+
+#chatroom-list-items :hover{
+    transform: scale(1.02); /* 微縮放效果 */
+    box-shadow: 0 0.208vw 0.521vw rgba(0, 0, 0, 0.15); /* 增加陰影 */
+    transition: all 0.3s ease; /* 平滑過渡 */
+}
+
+#chatroom-list-items li {
+    display: flex;
+    align-items: center;
+    padding: 0.781vw;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#chatroom-list-items li:hover {
+    background-color: rgba(255, 0, 0, 0.15); /* 使用較柔和的紅色 */
+}
+
+/*角色主頁左下角登入/登出按鈕*/
+.auth-button-container {
+    position: fixed;
+    bottom: 1.042vw;
+    left: 1.042vw;
+}
+
+.auth-button-container button {
+    background-color: #6a5acd;
+    color: white;
+    border: none;
+    padding: 0.521vw 1.042vw;
+    border-radius: 1.042vw;
+    font-size: 0.833vw;
+    cursor: pointer;
+}
+
+.auth-button-container button:hover {
+    background-color: #836fff;
+}
+
+/*回饋分析頁面*/
+
+/* 🎯 主要內容區 */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 1.563vw;
+}
+
+/* 🏆 總分區塊 */
+.total-score-container {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.total-score {
+    background: rgba(245, 245, 245, 1);
+    padding: 0.521vw 1.302vw;  
+    font-size: 1.146vw;  /* 避免過大 */
+    font-weight: bold;
+    border-radius: 0.417vw;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.12);
+    border: 0.104vw solid rgba(0, 0, 0, 0.15);
+    text-align: center;
+    min-width: 10.417vw;
+}
+
+/* ✨ Hover 時產生變化 */
+.total-score:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 6px 0.625vw rgba(0, 0, 0, 0.2);
+}
+
+.score-highlight {
+    color: red;
+    font-size: 1.771vw;
+    font-weight: bold;
+}
+
+/* 🛠 回饋區塊 */
+.feedback-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* 📌 單個回饋卡片 */
+.feedback-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 0.104vw solid #ddd;
+    padding: 1.302vw;
+    border-radius: 0.781vw;
+    background: white;
+    min-width: 41.667vw;
+    max-width: 46.875vw;
+    box-shadow: 0 0.208vw 0.625vw rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+    line-height: 1.6;
+    margin-bottom: 0.26vw;
+}
+
+.feedback-score {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.146vw;
+    font-weight: bold;
+}
+
+.score {
+    color: red;
+    font-size: 1.354vw;
+    font-weight: bold;
+    background: rgba(255, 0, 0, 0.1);
+    padding: 0.313vw 0.781vw;
+    border-radius: 0.521vw;
+}
+
+/* 📌 回饋文字內容 */
+.feedback-reason {
+    font-size: 0.938vw;
+    color: #555;
+    margin-top: 0.781vw;
+}
+
+/* 🌟 滑鼠懸停時的動態效果 */
+.feedback-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0px 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+/* 🎯 選擇聊天機器人 */
+.chatroom-selection {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+    background: white;
+    padding: 0.521vw;
+    border-radius: 0.417vw;
+    box-shadow: 0px 0.104vw 8px rgba(0, 0, 0, 0.15);
+    min-width: 15.625vw;
+}
+
+.chatroom-selection label {
+    font-size: 1.146vw;
+    font-weight: bold;
+    margin-right: 0.521vw;
+}
+
+#chatbot-select {
+    font-size: 1.146vw;
+    padding: 0.417vw 0.625vw;
+    border-radius: 0.417vw;
+    border: 0.104vw solid #ccc;
+    background-color: white;
+    cursor: pointer;
+    z-index: 11;
+}
+
+/* 🔽 Hover 時讓選單有更明顯的變化 */
+#chatbot-select:hover {
+    border-color: #007bff;
+    box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.5);
+    transform: scale(1.02);
+}
+
+#chatbot-select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+}
+
+/* 🎯 選擇聊天機器人區塊 */
+.top-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1.042vw;
+}
+
+/* 📌 回饋卡片 - 讓細節區域可以展開/收合 */
+.feedback-details {
+    display: none;  /* 初始隱藏 */
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+/* 🔽 展開時 */
+.feedback-details.active {
+    display: block;
+}
+
+/* 🔼 展開按鈕 */
+.expand-icon {
+    cursor: pointer;
+    font-size: 0.938vw;
+    margin-left: 0.521vw;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* 🔼 展開時旋轉圖示 */
+.feedback-score.active .expand-icon {
+    transform: rotate(180deg);
+}
+
+/*自訂夥伴頁面*/
+.custom-partner-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* 右側主要內容區 */
+.custom-partner-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-partner-content h2 {
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+
+/* 表單容器 */
+.partner-form {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 500px; /* 限制表單寬度 */
+    width: 90%;
+}
+
+/* 頭像區塊 */
+.form-avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar-preview img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+}
+
+/* 表單欄位的整體樣式 */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+/* 輸入框 */
+input[type="text"],
+input[type="number"] {
+    border: 1px solid #ddd; /* 調淡邊框顏色 */
+    padding: 10px;
+    border-radius: 5px;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    outline: none;
+}
+
+input[type="file"]{
+    margin-bottom: 10px;
+}
+
+
+/* 讓兩個輸入框並排 */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px; /* 增加間距 */
+}
+
+
+/* 儲存按鈕 */
+.save-partner-btn {
+    width: 100%;
+    padding: 12px;
+    background: #ff8855;
+    color: white;
+    font-size: 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.save-partner-btn:hover {
+    background: #ff7043;
+    transform: scale(1.05);
+}

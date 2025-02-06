@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自訂夥伴</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="custom-partner-container">
+        <!-- 側邊選單 Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo">
+            </div>
+            <ul class="menu">
+                <li data-page="character" onclick="navigateToCharacter()">
+                    <img src="{{ url_for('static', filename='img/menu-icon1.png') }}" alt="首頁圖標" class="menu-icon">
+                    首頁
+                </li>
+                <li data-page="chatroomlist" onclick="navigateToChatroomlist()">
+                    <img src="{{ url_for('static', filename='img/menu-icon2.png') }}" alt="聊天室圖標" class="menu-icon">
+                    聊天室
+                </li>
+                <li data-page="custom_partner" onclick="navigateToCustomPartner()">
+                    <img src="{{ url_for('static', filename='img/menu-icon5.png') }}" alt="自訂夥伴圖標" class="menu-icon">
+                    自訂夥伴
+                </li>
+                <li data-page="feedback" onclick="navigateToFeedback()">
+                    <img src="{{ url_for('static', filename='img/menu-icon3.png') }}" alt="回饋分析圖標" class="menu-icon">
+                    回饋分析
+                </li>
+                <li data-page="profile" onclick="navigateToProfile()">
+                    <img src="{{ url_for('static', filename='img/menu-icon4.png') }}" alt="個人資料圖標" class="menu-icon">
+                    個人資料
+                </li>                             
+            </ul>            
+        </div>
+
+        <!-- 主要內容區 -->
+        <div class="custom-partner-content">
+            <h2>建立您的自訂人格</h2>
+            
+            <form action="/save_custom_partner" method="post" enctype="multipart/form-data" class="partner-form">
+
+                <!-- 頭像區 -->
+                <div class="form-avatar">
+                    <div class="avatar-preview">
+                        <img id="avatar-preview" src="{{ character.image if character and character.image else url_for('static', filename='img/character1.png') }}" alt="夥伴頭像">
+                    </div>
+                    <label for="image">夥伴頭像：</label>
+                    <input type="file" id="image" name="image" accept="image/*" onchange="previewImage(event)">
+                </div>
+                
+            
+                <!-- 表單輸入欄位 -->
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="name">夥伴名稱：</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nickname">夥伴暱稱：</label>
+                        <input type="text" id="nickname" name="nickname" required>
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="age">年齡：</label>
+                        <input type="number" id="age" name="age" min="1" max="100" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="job">職業：</label>
+                        <input type="text" id="job" name="job" required>
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="personality">個性描述：</label>
+                        <input type="text" id="personality" name="personality" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="personality_desc1">個性細節 1：</label>
+                        <input type="text" id="personality_desc1" name="personality_desc1" required>
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="personality_desc2">個性細節 2：</label>
+                        <input type="text" id="personality_desc2" name="personality_desc2" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="hobbies">興趣愛好：</label>
+                        <input type="text" id="hobbies" name="hobbies" required>
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="hobby_desc1">愛好細節 1：</label>
+                        <input type="text" id="hobby_desc1" name="hobby_desc1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="hobby_desc2">愛好細節 2：</label>
+                        <input type="text" id="hobby_desc2" name="hobby_desc2" required>
+                    </div>
+                </div>
+            
+                <button type="submit" class="save-partner-btn">儲存夥伴</button>
+            </form>
+            
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("custom-partner-form");
+            const imageInput = document.getElementById("image");
+            const imagePreview = document.getElementById("avatar-preview");
+            // 檢查是否有預設的角色圖片
+            fetch("/get_custom_partner")
+                .then(response => response.json())
+                .then(data => {
+                    if (data.image) {
+                        imagePreview.src = data.image;
+                    } else {
+                        imagePreview.src = "/static/img/character1.png"; // 預設圖片
+                    }
+                })
+                .catch(error => console.error("獲取角色圖片錯誤:", error));
+
+            imageInput.addEventListener("change", function (event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        imagePreview.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    imagePreview.src = "/static/img/character1.png"; // 回復預設圖片
+                }
+            });
+
+            form.addEventListener("submit", function (event) {
+                event.preventDefault();
+                const formData = new FormData(form);
+
+                fetch("/save_custom_partner", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert("錯誤: " + data.error);
+                    } else {
+                        alert("夥伴儲存成功！");
+                        location.reload();
+                    }
+                })
+                .catch(error => {
+                    console.error("錯誤:", error);
+                });
+            });
+        });
+
+
+        function previewImage(event) {
+            const file = event.target.files[0]; 
+            if (!file) return; // 避免錯誤
+            const reader = new FileReader();
+            reader.onload = function () {
+                document.getElementById("avatar-preview").src = reader.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function navigateToCustomPartner() {
+            window.location.href = "/custom_partner";  // 新的路由
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+            // 取得目前網址的 Path，例如 "/feedback"
+            const currentPage = window.location.pathname.replace("/", "");
+
+            // 找到對應 `data-page` 屬性的 <li>，並加上 `active` 樣式
+            document.querySelectorAll(".menu li").forEach(item => {
+                if (item.getAttribute("data-page") === currentPage) {
+                    item.classList.add("active");
+                }
+            });
+        });
+        function navigateToFeedback() {
+            window.location.href = "/feedback";
+        }
+        function navigateToChatroomlist(){
+            window.location.href = "/chatroomlist"; // 指定跳轉的網址
+        }
+        function navigateToCharacter() {
+            window.location.href = "/character";
+        }
+        function navigateToProfile() {
+            window.location.href = "/profile";
+        }
+        function openChat(chatName) {
+            window.location.href = `/chatroom/${chatName}`;
+        }
+    </script>
+        
+</body>
+</html>
