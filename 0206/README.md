@@ -59,3 +59,14 @@ cd front-end
 [static資料夾](https://github.com/claire0311/front-end/tree/main/static)
 
 [templates資料夾](https://github.com/claire0311/front-end/tree/main/templates)
+
+# 2025/02/06進度回報
+[網頁程式碼](https://github.com/claire0311/front-end/tree/main/0206)  
+[0206網頁進度回報](https://www.youtube.com/watch?v=taKSpWH6ZsI)  
+## 目前功能 && 需要處理的問題
+- 會員系統：註冊、登入、登出、重設密碼。
+- 角色選擇：選擇不同的 AI 角色進行聊天。 (還缺少角色大頭貼照與全身照的設計)
+- 聊天室：與不同角色進行對話，並保存聊天紀錄。(真正的聊天功能還需要等待 AI 模型串接)
+- 自訂夥伴：使用者可創建自訂的 AI 夥伴。 
+- 個人資料管理：設定使用者暱稱、生日、性格與 MBTI。 (app.py 大頭貼照 bug 尚須修正)
+- 回饋分析：基於 AI 互動表現，提供用戶回饋。(目前僅有頁面，還需要等待 AI 模型串接)
