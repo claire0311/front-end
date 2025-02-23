@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>個人資料</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- 側邊欄 -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo">
+            </div>
+            <ul class="menu">
+                <li data-page="character" onclick="navigateToCharacter()">
+                    <img src="{{ url_for('static', filename='img/menu-icon1.png') }}" alt="角色圖標" class="menu-icon">
+                    首頁
+                </li>
+                <li data-page="chatroom" onclick="navigateToChatroomlist()">
+                    <img src="{{ url_for('static', filename='img/menu-icon2.png') }}" alt="聊天室圖標" class="menu-icon">
+                    聊天室
+                </li>
+                <li data-page="custom_partner" onclick="navigateToCustomPartner()">
+                    <img src="{{ url_for('static', filename='img/menu-icon5.png') }}" alt="自訂夥伴圖標" class="menu-icon">
+                    自訂夥伴
+                </li>
+                <li data-page="feedback" onclick="navigateToFeedback()">
+                    <img src="{{ url_for('static', filename='img/menu-icon3.png') }}" alt="回饋分析圖標" class="menu-icon">
+                    回饋分析
+                </li>
+                <li data-page="profile" onclick="navigateToProfile()">
+                    <img src="{{ url_for('static', filename='img/menu-icon4.png') }}" alt="個人資料圖標" class="menu-icon">
+                    個人資料
+                </li>
+            </ul>
+        </div>
+         <!-- 主要內容 -->
+        <div class="content">
+            <div class="profile-container">
+                <div class="profile-avatar">
+                    <img id="avatarImage" src="{{ user.avatar if user.avatar else '/static/img/character1.png' }}" alt="大頭貼" class="avatar-img">
+                    <button id="editAvatarBtn" class="edit-avatar-btn">編輯大頭貼</button>
+                    <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                </div>
+
+                <div class="profile-card">
+                    <h2>個人資訊</h2>
+                    <form class="profile-form">
+                        <label>暱稱：
+                            <input type="text" name="nickname" placeholder="輸入暱稱">
+                        </label>
+                        <label>生日：
+                            <input type="date" name="birthday">
+                        </label>
+                        <label>性別：
+                            <select name="gender">
+                                <option value="male">男</option>
+                                <option value="female">女</option>
+                                <option value="other">其他</option>
+                            </select>
+                        </label>
+                    </form>
+                </div>
+
+                <div class="profile-card">
+                    <div class="interests-section">
+                        <h2>個性與愛好</h2>
+                        <div class="input-group">
+                            <label for="personality">個性</label>
+                            <input type="text" id="personality" name="personality" placeholder="輸入您的個性">
+                        </div>
+                        <div class="input-group">
+                            <label for="hobbies">愛好</label>
+                            <input type="text" id="hobbies" name="hobbies" placeholder="輸入您的愛好">
+                        </div>
+                    </div>
+                </div>                
+
+                <button class="save-profile-btn">儲存</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const currentPage = window.location.pathname.split("/").pop();
+            const menuItems = document.querySelectorAll(".menu li");
+    
+            // ✅ 設定 `active` 樣式
+            menuItems.forEach(item => {
+                if (item.getAttribute("data-page") === currentPage) {
+                    item.classList.add("active");
+                }
+            });
+    
+            const avatarInput = document.getElementById("avatarInput");
+            const avatarPreview = document.getElementById("avatarImage");
+            const editAvatarBtn = document.getElementById("editAvatarBtn");
+            const saveProfileBtn = document.querySelector(".save-profile-btn");
+            let selectedFile = null;
+            let isFormDirty = false; 
+            const defaultAvatar = "/static/img/character1.png"; 
+    
+            // ✅ 監聽表單變更
+            document.querySelectorAll("input, select").forEach(input => {
+                input.addEventListener("input", () => {
+                    isFormDirty = true;
+                });
+            });
+    
+            // 建立「移除圖片」按鈕
+            const removeAvatarBtn = document.createElement("button");
+            removeAvatarBtn.textContent = "移除圖片";
+            removeAvatarBtn.id = "removeAvatarBtn";
+            removeAvatarBtn.classList.add("remove-avatar-btn");
+            removeAvatarBtn.style.display = "none"; 
+            document.querySelector(".profile-avatar").appendChild(removeAvatarBtn);
+    
+            // 點擊「編輯大頭貼」
+            editAvatarBtn.addEventListener("click", function () {
+                avatarInput.click();
+            });
+    
+            // 預覽圖片並標記 isFormDirty
+            avatarInput.addEventListener("change", function (event) {
+                const file = event.target.files[0];
+    
+                if (file) {
+                    selectedFile = file; 
+                    isFormDirty = true;
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        avatarPreview.src = e.target.result; 
+                        removeAvatarBtn.style.display = "block"; 
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+    
+            // 點擊「移除圖片」
+            removeAvatarBtn.addEventListener("click", function () {
+                avatarPreview.src = defaultAvatar;
+                selectedFile = null;
+                removeAvatarBtn.style.display = "none"; 
+                isFormDirty = true;
+            });
+    
+            // 點擊「儲存」時，上傳圖片並儲存其他資訊
+            saveProfileBtn.addEventListener("click", function () {
+                saveProfile().then(() => {
+                    alert("個人資料儲存成功！");
+                    isFormDirty = false;
+                });
+            });
+    
+            function saveProfile() {
+                return new Promise((resolve, reject) => {
+                    const formData = new FormData();
+                    formData.append("nickname", document.querySelector("input[name='nickname']").value);
+                    formData.append("birthday", document.querySelector("input[name='birthday']").value);
+                    formData.append("gender", document.querySelector("select[name='gender']").value);
+                    formData.append("mbti", document.querySelector("select[name='mbti']").value);
+                    formData.append("personality", document.querySelector("input[name='personality']").value);
+                    formData.append("hobbies", document.querySelector("input[name='hobbies']").value);
+    
+                    if (selectedFile) {
+                        formData.append("avatar", selectedFile);
+                    } else if (avatarPreview.src === defaultAvatar) {
+                        formData.append("remove_avatar", "true");
+                    }
+    
+                    fetch("/save_profile", {
+                        method: "POST",
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message) {
+                            isFormDirty = false;
+                            selectedFile = null;
+                            removeAvatarBtn.style.display = avatarPreview.src === defaultAvatar ? "none" : "block";
+                            resolve();  // ✅ 儲存成功時，執行 resolve()
+                        } else {
+                            alert("儲存失敗：" + data.error);
+                            reject();  // ❌ 儲存失敗時，執行 reject()
+                        }
+                    })
+                    .catch(error => {
+                        console.error("儲存個人資料失敗:", error);
+                        reject();
+                    });
+                });
+            }
+    
+            // ✅ 修正 navigateWithSaveCheck() 確保成功後跳轉
+            function navigateWithSaveCheck(targetURL) {
+                if (isFormDirty) {
+                    let confirmLeave = confirm("您有尚未儲存的更改，是否儲存？");
+                    if (confirmLeave) {
+                        saveProfile().then(() => {
+                            setTimeout(() => {
+                                window.location.href = targetURL;
+                            }, 500); // ✅ 延遲 500ms 確保請求完成
+                        }).catch(() => {
+                            console.error("儲存失敗，取消跳轉");
+                        });
+                    } else {
+                        window.location.href = targetURL;
+                    }
+                } else {
+                    window.location.href = targetURL;
+                }
+            }
+    
+            // ✅ **修正點擊側邊欄無法跳轉的問題**
+            menuItems.forEach(item => {
+                item.addEventListener("click", function (event) {
+                    event.preventDefault(); // **⚠️ 確保不會因 `<a>` 預設行為直接跳轉**
+                    const targetURL = `/${item.getAttribute("data-page")}`;
+                    navigateWithSaveCheck(targetURL);
+                });
+            });
+        });
+    </script>
+    
+    
+    
+    
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>主頁面</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo">
+            </div>
+            <ul class="menu">
+                <li data-page="character" onclick="navigateTo('character')">
+                    <img src="{{ url_for('static', filename='img/menu-icon1.png') }}" alt="首頁圖標" class="menu-icon">
+                    首頁
+                </li>
+                <li data-page="chatroomlist" onclick="navigateTo('chatroomlist')">
+                    <img src="{{ url_for('static', filename='img/menu-icon2.png') }}" alt="聊天室圖標" class="menu-icon">
+                    聊天室
+                </li>
+                <li data-page="custom_partner" onclick="navigateToCustomPartner()">
+                    <img src="{{ url_for('static', filename='img/menu-icon5.png') }}" alt="自訂夥伴圖標" class="menu-icon">
+                    自訂夥伴
+                </li>
+                <li data-page="feedback" onclick="navigateTo('feedback')">
+                    <img src="{{ url_for('static', filename='img/menu-icon3.png') }}" alt="回饋分析圖標" class="menu-icon">
+                    回饋分析
+                </li>
+                <li data-page="profile" onclick="navigateTo('profile')">
+                    <img src="{{ url_for('static', filename='img/menu-icon4.png') }}" alt="個人資料圖標" class="menu-icon">
+                    個人資料
+                </li>                             
+            </ul>            
+        </div>
+
+        <div class="main-content">
+            <h1>請選擇您的 AI 夥伴，開始對話！</h1>
+            <div class="characters">
+                {% for character in characters %}
+                <div class="character-card" onclick="window.location.href='/character-info/{{ character.name }}'">
+                    <img src="{{ url_for('static', filename='img/' + character.image) }}" alt="{{ character.name }}">
+                    <p>{{ character.name }}</p>
+                    <button class="chat-button" 
+                        onmouseover="showChatTooltip(this, '{{ character.name }}')" 
+                        onmouseout="resetTooltip(this)" 
+                        onclick="openChat(event, '{{ character.name }}')">
+                        Tap To Chat
+                    </button>
+                    <div class="tooltip">點我以查看 '{{ character.name }}' 資訊</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <!-- 左下角登入/登出按鈕 -->
+    <div class="auth-button-container">
+        <button id="loginLogoutBtn" onclick="handleAuthClick()">Loading...</button>
+    </div>
+
+    <script>
+        function navigateToCustomPartner() {
+            if (!window.isLoggedIn) {
+                alert("你必須先登入！");
+                return;
+            }
+            window.location.href = "/custom_partner";  // 新的路由
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // 取得目前網址的 Path，例如 "/feedback"
+            const currentPage = window.location.pathname.replace("/", "");
+
+            // 找到對應 `data-page` 屬性的 <li>，並加上 `active` 樣式
+            document.querySelectorAll(".menu li").forEach(item => {
+                if (item.getAttribute("data-page") === currentPage) {
+                    item.classList.add("active");
+                }
+            });
+        });
+        
+        document.addEventListener("DOMContentLoaded", function () {
+            checkLoginStatus();
+        });
+
+        /*處理登入/登出按鈕點擊事件*/
+        function handleAuthClick() {
+            fetch("/check_login")
+                .then(response => response.json())
+                .then(data => {
+                    if (data.logged_in) {
+                        window.location.href = "/logout";
+                    } else {
+                        window.location.href = "/login";
+                    }
+                })
+                .catch(error => console.error("無法獲取登入狀態:", error));
+        }
+
+        /*確認登出*/
+        function confirmLogout() {
+            let confirmLeave = confirm("確認登出？");
+            if (confirmLeave) {
+                window.location.href = "/logout";  // 執行登出
+            }
+        }
+
+        /*檢查使用者是否已登入，並更新登入/登出按鈕的文字*/
+        function checkLoginStatus() {
+            fetch("/check_login")
+                .then(response => response.json())
+                .then(data => {
+                    console.log("登入狀態:", data);  // 🔍 確認後端回應的資料
+                    window.isLoggedIn = !!data.logged_in; // 強制轉換為布林值
+                    let btn = document.getElementById("loginLogoutBtn");
+                    if (data.logged_in) {
+                        btn.innerText = "登出";
+                        btn.onclick = confirmLogout;  // 讓登出按鈕執行 confirmLogout()
+
+                        // **加入登入後的歡迎語**
+                        let isFirstVisit = sessionStorage.getItem("firstVisit") !== "false";
+                        if (isFirstVisit) {
+                            alert(`歡迎回來，${data.username}！`);
+                            sessionStorage.setItem("firstVisit", "false");  // 設定 sessionStorage 防止多次顯示
+                        }
+
+                    } else {
+                        btn.innerText = "登入";
+                        btn.onclick = () => window.location.href = "/login";
+                        sessionStorage.setItem("firstVisit", "true");  // 登出時重置
+                    }
+
+                    // 記錄使用者是否已登入
+                    window.isLoggedIn = data.logged_in;
+                })
+                .catch(error => console.error("登入狀態檢查失敗:", error));
+        }
+        
+
+        /*跳轉到聊天列表*/
+        function navigateToChatList() {
+            if (!window.isLoggedIn) {
+                alert("你必須先登入！");
+                return;
+            }
+            window.location.href = "/chatroomlist";
+        }
+
+
+        function openChat(event, characterName) {
+            event.stopPropagation();
+            if (!window.isLoggedIn) {
+                alert("你必須先登入！");
+                return;
+            }
+            window.location.href = "/chatroom/" + encodeURIComponent(characterName);
+        }
+
+        function navigateTo(page) {
+            if (!window.isLoggedIn) {
+                alert("你必須先登入！");
+                return;
+            }
+            window.location.href = "/" + page;
+        }
+        
+
+        function showChatTooltip(button, characterName) {
+            let card = button.closest('.character-card');
+            let tooltip = card.querySelector('.tooltip');
+            tooltip.textContent = "點我與 '"+characterName+"' 聊天";
+        }
+
+        function resetTooltip(button) {
+            let card = button.closest('.character-card');
+            let tooltip = card.querySelector('.tooltip');
+            let characterName = card.querySelector('p').textContent;
+            tooltip.textContent = "點我以查看 '" + characterName + "' 資訊";
+        }
+    </script>
+</body>
+</html>
