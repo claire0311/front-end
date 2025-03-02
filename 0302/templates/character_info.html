@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ character.name }} - 角色資訊</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 側邊選單 -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo">
+            </div>
+            <ul class="menu">
+                <li class="info-current-page">
+                    <img src="{{ url_for('static', filename='img/menu-icon1.png') }}" alt="角色資訊圖標" class="menu-icon">
+                    角色資訊：{{ character.name }}
+                </li>
+                <li onclick="navigateTo('chatroomlist')">
+                    <img src="{{ url_for('static', filename='img/menu-icon2.png') }}" alt="聊天室圖標" class="menu-icon">
+                    聊天室
+                </li>
+                <li onclick="navigateTo('feedback')">
+                    <img src="{{ url_for('static', filename='img/menu-icon3.png') }}" alt="回饋分析圖標" class="menu-icon">
+                    回饋分析
+                </li>
+                <li onclick="navigateTo('profile')">
+                    <img src="{{ url_for('static', filename='img/menu-icon4.png') }}" alt="個人資料圖標" class="menu-icon">
+                    個人資料
+                </li>                             
+            </ul>    
+        </div>
+
+        <!-- 主要內容 -->
+        <div class="character-info-container">
+            <button class="prev-character" onclick="prevCharacter()">&#9665;</button>
+            
+            <!-- 角色圖片 -->
+            <div class="character-fullbody">
+                <img id="character-image" src="{{ url_for('static', filename='img/' + character.info_image) }}" alt="{{ character.name }}">
+                <h3 id="character-name">{{ character.name }}</h3>
+            </div>
+
+            <!-- 角色資訊 -->
+            <div class="info-section">
+                <div class="info-box">
+                    <div class="info-row"><h3>暱稱：</h3> <p id="character-nickname">{{ character.nickname }}</p></div>
+                    <div class="info-row"><h3>年齡：</h3> <p id="character-age">{{ character.age }}</p></div>
+                    <div class="info-row"><h3>職業：</h3> <p id="character-job">{{ character.job }}</p></div>
+                </div>
+                
+                <div class="info-box">
+                    <div class="info-row"><h3>個性：</h3> <p id="character-personality">{{ character.personality }}</p></div>
+                    <div class="info-row"><i class="fas fa-lightbulb small-icon"></i><p id="personality-desc1">{{ character.personality_desc1 }}</p></div>
+                    <div class="info-row"><i class="fas fa-lightbulb small-icon"></i><p id="personality-desc2">{{ character.personality_desc2 }}</p></div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-row"><h3>愛好：</h3> <p id="character-hobbies">{{ character.hobbies }}</p></div>
+                    <div class="info-row"><i class="fas fa-star small-icon"></i><p id="hobby-desc1">{{ character.hobby_desc1 }}</p></div>
+                    <div class="info-row"><i class="fas fa-star small-icon"></i><p id="hobby-desc2">{{ character.hobby_desc2 }}</p></div>
+                </div>
+            </div>
+
+            <button class="next-character" onclick="nextCharacter()">&#9655;</button>
+        </div>
+    </div>
+
+    <!-- 右下角聊天室按鈕，導向該角色專屬聊天室 -->
+    <div class="bottom-right-icons">
+        <div class="chat-icon" onclick="navigateToCharacterChatroom()">
+            <i class="fas fa-comments"></i>
+        </div>
+    </div>
+
+    <!-- 左下角首頁按鈕 -->
+    <div class="bottom-left-icon">
+        <div class="home-icon" onclick="navigateTo('')">
+            <i class="fas fa-home"></i>
+        </div>
+    </div>
+
+    <script>
+        let characters = [];
+        let currentIndex = 0;
+
+        function navigateTo(page) {
+            window.location.href = "/" + page;
+        }
+
+        function navigateToCharacterChatroom() {
+            let characterName = document.getElementById("character-name").textContent.trim();
+            window.location.href = "/chatroom/" + encodeURIComponent(characterName);
+        }
+
+        function getCharacterNameFromURL() {
+            let path = window.location.pathname;
+            return decodeURIComponent(path.split("/").pop());
+        }
+
+        function fetchCharacters() {
+            fetch("/api/characters")
+                .then(response => response.json())
+                .then(data => {
+                    characters = data;
+                    let characterName = getCharacterNameFromURL();
+                    currentIndex = characters.findIndex(c => c.name === characterName);
+                    if (currentIndex === -1) currentIndex = 0;
+                    updateCharacterInfo(false);
+                })
+                .catch(error => console.error("載入角色資訊失敗:", error));
+        }
+
+        function updateCharacterInfo(updateHistory = true) {
+            if (characters.length === 0) return;
+            let character = characters[currentIndex];
+
+            document.getElementById("character-image").src = "/static/img/" + character.info_image;
+            document.getElementById("character-name").textContent = character.name;
+            document.getElementById("character-nickname").textContent = character.nickname;
+            document.getElementById("character-age").textContent = character.age;
+            document.getElementById("character-job").textContent = character.job;
+            document.getElementById("character-personality").textContent = character.personality;
+            document.getElementById("personality-desc1").textContent = character.personality_desc1;
+            document.getElementById("personality-desc2").textContent = character.personality_desc2;
+            document.getElementById("character-hobbies").textContent = character.hobbies;
+            document.getElementById("hobby-desc1").textContent = character.hobby_desc1;
+            document.getElementById("hobby-desc2").textContent = character.hobby_desc2;
+
+            let sidebarTitle = document.querySelector(".info-current-page");
+            if (sidebarTitle) {
+                sidebarTitle.innerHTML = `<img src="/static/img/menu-icon1.png" alt="角色資訊圖標" class="menu-icon"> 角色資訊：${character.name}`;
+            }
+
+            if (updateHistory) {
+                window.history.pushState({ character: character.name }, "", "/character-info/" + encodeURIComponent(character.name));
+            }
+        }
+
+        window.addEventListener("popstate", function () {
+            let characterName = getCharacterNameFromURL();
+            let newIndex = characters.findIndex(c => c.name === characterName);
+
+            if (newIndex !== -1) {
+                currentIndex = newIndex;
+                updateCharacterInfo(false);
+            }
+        });
+
+        function prevCharacter() {
+            currentIndex = (currentIndex - 1 + characters.length) % characters.length;
+            updateCharacterInfo();
+        }
+
+        function nextCharacter() {
+            currentIndex = (currentIndex + 1) % characters.length;
+            updateCharacterInfo();
+        }
+
+        document.addEventListener("DOMContentLoaded", fetchCharacters);
+    </script>
+</body>
+</html>

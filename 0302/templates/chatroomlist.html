@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聊天室 - {{ character.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 側邊選單 -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo">
+            </div>
+            <ul class="menu">
+                <li data-page="character" onclick="navigateToCharacter()">
+                    <img src="{{ url_for('static', filename='img/menu-icon1.png') }}" alt="首頁圖標" class="menu-icon">
+                    首頁
+                </li>
+                <li data-page="chatroomlist" onclick="navigateToChatroomlist()">
+                    <img src="{{ url_for('static', filename='img/menu-icon2.png') }}" alt="聊天室圖標" class="menu-icon">
+                    聊天室
+                </li>
+                <li data-page="feedback" onclick="navigateToFeedback()">
+                    <img src="{{ url_for('static', filename='img/menu-icon3.png') }}" alt="回饋分析圖標" class="menu-icon">
+                    回饋分析
+                </li>
+                <li data-page="profile" onclick="navigateToProfile()">
+                    <img src="{{ url_for('static', filename='img/menu-icon4.png') }}" alt="個人資料圖標" class="menu-icon">
+                    個人資料
+                </li>                             
+            </ul>            
+        </div>
+
+        <!-- 聊天室列表 -->
+        <div class="chatroom-list-container" id="chatroom-list">
+            <h2>聊天室列表</h2>
+            <ul id="chatroom-list-items">
+                {% for chat in chatrooms %}
+                <li onclick="openChat('{{ chat.name }}')">
+                    <img src="{{ url_for('static', filename='img/' + chat.image) }}" class="chatroom-list-avatar">
+                    <span>{{ chat.name }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // 取得目前網址的 Path，例如 "/feedback"
+            const currentPage = window.location.pathname.replace("/", "");
+
+            // 找到對應 `data-page` 屬性的 <li>，並加上 `active` 樣式
+            document.querySelectorAll(".menu li").forEach(item => {
+                if (item.getAttribute("data-page") === currentPage) {
+                    item.classList.add("active");
+                }
+            });
+        });
+        function navigateToFeedback() {
+            window.location.href = "/feedback";
+        }
+        function navigateToChatroomlist(){
+            window.location.href = "/chatroomlist"; // 指定跳轉的網址
+        }
+        function navigateToCharacter() {
+            window.location.href = "/character";
+        }
+        function navigateToProfile() {
+            window.location.href = "/profile";
+        }
+        function openChat(chatName) {
+            window.location.href = `/chatroom/${chatName}`;
+        }
+    </script>
+</body>
+</html>

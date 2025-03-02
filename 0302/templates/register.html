@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>會員註冊</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        function validateForm(event) {
+            event.preventDefault();
+            let username = document.getElementById("username").value;
+            let password = document.getElementById("password").value;
+            let confirmPassword = document.getElementById("confirm_password").value;
+            let errorMessage = "";
+    
+            let usernamePattern = /^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]{8,15}$/; // ✅ 限制帳號一定包含英文+數字
+            if (!usernamePattern.test(username)) {
+                errorMessage += "❌ 帳號必須為 8-15 位的英文 + 數字，且至少包含 1 個英文與 1 個數字！\n";
+            }
+    
+            let passwordPattern = /^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]{8,15}$/;
+            if (!passwordPattern.test(password)) {
+                errorMessage += "❌ 密碼必須為 8-15 位的英文 + 數字組合！\n";
+            }
+    
+            if (password !== confirmPassword) {
+                errorMessage += "❌ 密碼與確認密碼不匹配！\n";
+            }
+    
+            if (errorMessage !== "") {
+                alert(errorMessage);
+                return false; // 確保表單不會提交
+            } else {
+                document.getElementById("register-form").submit();
+            }
+        }
+        function navigateToHome() {
+            window.location.href = "/";
+        }
+    </script>    
+</head>
+<body>
+    <div class="login-container">
+        <img src="{{ url_for('static', filename='user-icon.png') }}" alt="Logo" class="logo">
+        <h2>會員註冊</h2>
+        {% if message %}
+            <p style="color: red;">{{ message }}</p>
+        {% endif %}
+        <form method="POST" id="register-form" onsubmit="return validateForm(event);">
+            <div class="input-group">
+                <span class="icon">&#x1F464;</span>
+                <input type="text" id="username" name="username" placeholder="帳號" required>
+            </div>
+            <div class="input-group">
+                <span class="icon">&#x1F512;</span>
+                <input type="password" id="password" name="password" placeholder="密碼" required>
+            </div>
+            <div class="input-group">
+                <span class="icon">&#x1F512;</span>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="確認密碼" required>
+            </div>
+            <button type="submit" class="login-btn">註冊</button>
+        </form>        
+        <div class="links">
+            <a href="{{ url_for('login') }}">已有帳號？登入</a>
+        </div>
+    </div>
+        <!-- 左下角首頁按鈕 -->
+        <div class="bottom-left-icon">
+            <div class="home-icon" onclick="navigateToHome()">
+                <i class="fas fa-home"></i>
+            </div>
+        </div>
+</body>
+</html>
