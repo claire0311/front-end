@@ -2,7 +2,8 @@
 
 WingChat 是一個使用 React 和 Ollama 构建的 AI 社交教練 Web 應用程式。旨在透過與使用者自訂的 AI 角色進行互動，幫助使用者在不同的社交情境下練習溝通技巧，並提供回饋以促進個人成長。
 
-[![WingChat 截圖](圖片連結)](![image](https://github.com/user-attachments/assets/ee7d4133-8d9e-4423-a4ac-56aed4d82074)) <!-- 建議放一張應用截圖 -->
+![image](https://github.com/user-attachments/assets/120365d6-e973-4510-b4a1-244e180d65ef)
+ <!-- 建議放一張應用截圖 -->
 
 ## ✨ 主要功能
 
