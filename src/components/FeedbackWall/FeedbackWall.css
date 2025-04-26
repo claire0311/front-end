@@ -1,0 +1,43 @@
+/* src/components/FeedbackWall/FeedbackWall.css (或添加到 App.css) */
+
+/* 使 FeedbackWall 容器佔滿其父容器高度 */
+.feedback-wall-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* 依賴 App.js 的佈局 */
+    overflow: hidden; /* 防止外層滾動 */
+  }
+  
+  /* 固定的頭部區域 (標題、描述、角色搜尋) */
+  .feedback-wall-header {
+    flex-shrink: 0; /* 固定高度 */
+    background-color: #ffffff; /* 白色背景 */
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #dee2e6;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    z-index: 10; /* 確保在上方 */
+    position: sticky; /* 嘗試粘性定位 */
+    top: 0;
+  }
+  
+  /* 篩選控制項區域 (目標搜尋等) */
+  .feedback-filters-container {
+      flex-shrink: 0; /* 固定高度 */
+      padding: 0.75rem 1.5rem;
+      background-color: #f8f9fa; /* 稍暗背景區分 */
+      border-bottom: 1px solid #e9ecef;
+      z-index: 9; /* 在 header 下方但在 body 上方 */
+  }
+  
+  /* 可滾動的內容區域 (圖表、歷史列表) */
+  .feedback-wall-body {
+    flex-grow: 1; /* 佔滿剩餘空間 */
+    overflow-y: auto; /* 允許垂直滾動 */
+    padding: 1.5rem; /* 內邊距 */
+    min-height: 0; /* Flexbox hack */
+  }
+  
+  /* 調整歷史記錄卡片間距 */
+  .feedback-wall-body .card {
+      margin-bottom: 1rem;
+  }

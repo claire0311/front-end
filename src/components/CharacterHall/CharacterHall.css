@@ -1,0 +1,103 @@
+/* src/components/CharacterHall/CharacterHall.css (或添加到 App.css) */
+
+/* 使 CharacterHall 容器佔滿其父容器 (main-content) 的高度 */
+/* 這依賴於 App.js 和 App.css 的正確設置 */
+.character-hall-container {
+    height: 100%;
+    overflow: hidden; /* 防止外層容器滾動 */
+  }
+  
+  /* 固定的頭部區域 */
+  .character-hall-header {
+    flex-shrink: 0; /* 固定高度 */
+    border-bottom: 1px solid #dee2e6;
+    /* sticky-top 在這裡可能不是最佳方案，依賴 Flexbox */
+    /* 如果粘性定位有問題，可以移除 sticky-top */
+  }
+  
+  /* 可滾動的內容區域 */
+  .character-hall-body {
+    flex-grow: 1; /* 佔滿剩餘空間 */
+    overflow-y: auto; /* 允許垂直滾動 */
+    /* padding: 1.5rem; */ /* 調整內邊距 */
+  }
+  
+  /* 卡片樣式 (之前可能在 style jsx global) */
+  .character-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  }
+  
+  .character-description {
+     display: -webkit-box;
+     -webkit-line-clamp: 3; /* 最多顯示 3 行 */
+     -webkit-box-orient: vertical;
+     overflow: hidden;
+     text-overflow: ellipsis;
+     min-height: 60px; /* 確保至少有一定高度 */
+  }
+  /* src/components/CharacterHall/CharacterHall.css (添加 Eval Modal 樣式) */
+
+/* ... (保留 .character-hall-container, .character-hall-header, .character-hall-body, .character-card, .character-description 的樣式) ... */
+
+/* --- CharacterEvalModal 的樣式 --- */
+.character-eval-modal-dialog .modal-content {
+    height: 80vh;
+    max-height: 800px;
+    display: flex; /* 確保 modal-content 也是 flex */
+    flex-direction: column;
+  }
+  
+  .character-eval-modal-body {
+    flex-grow: 1; /* Body 佔滿剩餘空間 */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Body 不滾動 */
+    padding: 0; /* 移除預設 padding */
+  }
+  
+ /* 可收起的篩選區域 */
+.character-eval-filters {
+    flex-shrink: 0; /* 固定高度 */
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    padding: 0.75rem 1.5rem;
+  }
+  .character-eval-content {
+    flex-grow: 1; /* 佔滿剩餘空間 */
+    overflow-y: auto; /* 允許內容滾動 */
+    /* padding: 1.5rem; */ /* 已在 JSX 中設置 */
+    min-height: 0; /* Flexbox hack */
+  }
+  
+  /* 收起/展開按鈕樣式微調 */
+  .character-eval-filters .btn-link {
+    text-decoration: none;
+    font-size: 0.9em;
+  }
+  .character-eval-filters .btn-link:hover {
+    text-decoration: underline;
+  }
+
+  /* --- 新增：固定的圖表按鈕區域 --- */
+.character-eval-chart-controls {
+    flex-shrink: 0; /* 固定高度 */
+    padding: 0.75rem 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+    background-color: #ffffff; /* 可以給個白色背景 */
+}
+
+/* 刪除按鈕樣式 */
+.delete-feedback-btn {
+    border: none; /* 移除邊框 */
+    background: none; /* 移除背景 */
+    color: var(--bs-danger); /* 紅色 */
+    opacity: 0.6; /* 平時半透明 */
+    transition: opacity 0.2s ease-in-out;
+    padding: 0.1rem 0.3rem !important; /* 微調 padding */
+}
+.delete-feedback-btn:hover {
+    opacity: 1; /* 懸停時不透明 */
+    background-color: rgba(220, 53, 69, 0.1); /* 懸停時淺紅色背景 */
+}
