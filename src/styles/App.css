@@ -78,10 +78,13 @@ a:hover { color: darken(var(--bs-primary), 10%); text-decoration: underline; }
 .alert { border-left-width: 4px; border-radius: 0.25rem; }
 .alert-danger { border-left-color: var(--bs-danger); }
 .alert-warning { border-left-color: var(--bs-warning); }
-.alert-info { border-left-color: var(--bs-info); }
+.alert-info {
+  border-left: 4px solid var(--bs-info); /* 粗細4px、實線、用info色 */
+}
 .alert-success { border-left-color: var(--bs-success); }
 /* 移除全局滾動條美化，因為滾動區域現在更局部 */
 /* * { scrollbar-width: thin; scrollbar-color: #adb5bd #f8f9fa; } */
 /* *::-webkit-scrollbar { width: 8px; } */
 /* *::-webkit-scrollbar-track { background: #f8f9fa; } */
 /* *::-webkit-scrollbar-thumb { background-color: #adb5bd; border-radius: 10px; border: 2px solid #f8f9fa; } */
+

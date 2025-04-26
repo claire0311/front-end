@@ -99,5 +99,5 @@
 }
 .delete-feedback-btn:hover {
     opacity: 1; /* 懸停時不透明 */
-    background-color: rgba(220, 53, 69, 0.1); /* 懸停時淺紅色背景 */
+    background-color: rgba(220, 53, 69, 1); /* 懸停時淺紅色背景 */
 }

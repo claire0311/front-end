@@ -1,105 +1,45 @@
-// src/components/FeedbackWall/FeedbackChart.js (改為折線圖)
+// src/components/FeedbackWall/FeedbackChart.js (修正 X 軸刻度配置)
 
 import React from 'react';
-// --- 導入 Line 而不是 Bar ---
 import { Line } from 'react-chartjs-2';
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  // --- 移除 BarElement ---
-  // BarElement,
-  // --- 添加 LineElement 和 PointElement ---
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  Filler // (可選) 如果你想在線條下方填充顏色
+  Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement,
+  Title, Tooltip, Legend, Filler
 } from 'chart.js';
 
-// --- 更新註冊的元素 ---
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement, // 添加
-  LineElement,  // 添加
-  Title,
-  Tooltip,
-  Legend,
-  Filler // (可選)
-);
+ChartJS.register( CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler );
 
 function FeedbackChart({ labels, datasets }) {
   const data = {
-    labels: labels,
-    datasets: datasets.map(ds => ({
-        ...ds,
-        // --- (可選) 為折線圖添加特定樣式 ---
-        fill: false, // 不填充線條下方顏色 (多條線時更清晰)
-        tension: 0.1, // 給線條一點張力，使其平滑
-        pointBackgroundColor: ds.borderColor, // 點的背景色同邊框色
-        pointBorderColor: '#fff', // 點的邊框色
-        pointHoverBackgroundColor: '#fff', // 鼠標懸停時點的背景色
-        pointHoverBorderColor: ds.borderColor, // 鼠標懸停時點的邊框色
-        // pointRadius: 3, // 可以設置點的大小
-        // pointHoverRadius: 5, // 懸停時點的大小
-    })),
+    labels: labels, // 這個 labels 數組現在可能包含換行符 '\n'
+    datasets: datasets.map(ds => ({ ...ds, fill: false, tension: 0.1, pointBackgroundColor: ds.borderColor, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: ds.borderColor })),
   };
 
   const options = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: '社交技能評分趨勢 (0-100分)',
-      },
-      tooltip: {
-         mode: 'index',
-         intersect: false,
-         // (可選) 自訂 Tooltip 樣式
-         // callbacks: { ... }
-      }
+      legend: { position: 'top', },
+      title: { display: true, text: '社交技能評分趨勢 (0-100分)', },
+      tooltip: { mode: 'index', intersect: false, }
     },
     scales: {
-      y: {
-        beginAtZero: true,
-        max: 100,
-        title: {
-           display: true,
-           text: '分數'
-        }
-      },
-      x: {
-         title: {
-            display: true,
-            text: '練習時間'
-         },
+      y: { beginAtZero: true, max: 100, title: { display: true, text: '分數' } },
+      x: { // <<<--- 修改這裡
+         title: { display: true, text: '練習時間' },
          ticks: {
-             autoSkip: true,
-             maxRotation: 45,
-             minRotation: 0
+             autoSkip: true, // 保持自動跳過
+             maxRotation: 0, // <<<--- 設置為 0，防止標籤傾斜
+             minRotation: 0,
+             // 不需要特殊處理換行，Chart.js 3.x+ 會自動處理數組或帶 \n 的字符串標籤
          }
-      }
+      } // <<<--- 結束修改
     },
-    interaction: {
-      mode: 'index',
-      intersect: false,
-    },
-    // --- (可選) 添加 hover 效果配置 ---
-    // hover: {
-    //   mode: 'nearest',
-    //   intersect: true
-    // }
+    interaction: { mode: 'index', intersect: false, },
   };
 
   return (
     <div style={{ position: 'relative', height: '300px', width: '100%' }}>
-       {/* --- 將 Bar 改為 Line --- */}
        <Line options={options} data={data} />
     </div>
    );

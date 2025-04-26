@@ -1,16 +1,16 @@
-/* src/styles/TrainingRoom.css */
+/* src/styles/TrainingRoom.css (包含固定佈局和 MessageInput 樣式) */
 
 .training-room-container {
   display: flex;
   flex-direction: column;
-  height: 100%; /* <<<--- 依賴父容器給的高度 */
+  height: calc(100vh - 56px - 1rem); /* !!! 再次確認這個計算值 !!! */
   overflow: hidden;
-  background-color: #fff;
+  background-color: #f8f9fa;
 }
 
 .goal-input-row {
   flex-shrink: 0;
-  background-color: #f8f9fa;
+  background-color: #ffffff;
   padding: 0.75rem 1.5rem;
   border-bottom: 1px solid #dee2e6;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
@@ -18,7 +18,6 @@
 }
 .goal-input-row .dropdown-toggle { border-color: #ced4da; color: #495057; }
 .goal-input-row .dropdown-toggle:hover, .goal-input-row .dropdown-toggle:focus { background-color: #e9ecef; }
-
 
 .chat-display-row {
   flex-grow: 1;
@@ -45,7 +44,49 @@
   z-index: 10;
 }
 
-/* --- 其他訊息樣式 ... (保持不變) ... --- */
+/* --- 輸入組樣式 --- */
+.message-input-group {
+   /* 確保垂直居中 */
+   align-items: center;
+}
+
+.message-input-group .feedback-button {
+    /* 確保高度一致 */
+    height: 40px;
+    /* 可以按需調整樣式 */
+    /* border-radius: 0.3rem !important; */
+}
+
+.message-input-group .message-textarea {
+    min-height: 40px; /* 確保最小高度與按鈕一致 */
+    max-height: 100px; /* 限制最大高度 */
+    line-height: 1.5; /* 可以調整行高 */
+    /* 使用 Bootstrap 的 margin 工具類比 !important 更好 */
+    /* margin-left: 0.5rem !important;  */
+    /* margin-right: 0.5rem !important; */
+    border-radius: 1.5rem; /* 圓角輸入框 */
+    border-color: #ced4da;
+    padding: 0.5rem 1rem;
+}
+.message-input-group .message-textarea:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+}
+
+
+.message-input-group .send-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* 圓形按鈕 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    /* margin-left 由 textarea 的 mx-2 提供 */
+}
+
+
+/* --- 其他訊息樣式 (保持不變) --- */
 .message-row { display: flex; width: 100%; }
 .user-row { justify-content: flex-start; }
 .ai-row { justify-content: flex-end; }
@@ -67,11 +108,7 @@
 .feedback-message li { margin-bottom: 0.3rem; font-size: 0.9em; color: #6c757d; }
 .feedback-message .badge { font-size: 0.9em; }
 
-.message-input-row .form-control { border-radius: 1.5rem; border-color: #ced4da; padding: 0.5rem 1rem; min-height: calc(1.5em + 1rem + 2px); }
-.message-input-row .form-control:focus { border-color: var(--bs-primary); box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25); }
-.message-input-row .btn { border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; padding: 0; margin-left: 0.5rem; }
-.message-input-row .btn-outline-info { border-radius: 1.5rem; width: auto; height: 40px; padding: 0 1rem; margin-left: 0; margin-right: 0.5rem; }
-
+/* --- Markdown 樣式 (保持不變) --- */
 .message pre { background-color: rgba(0,0,0,0.05); padding: 0.5rem; border-radius: 0.25rem; overflow-x: auto; font-size: 0.9em; }
 .message code { background-color: rgba(0,0,0,0.05); padding: 0.1em 0.3em; border-radius: 0.2em; font-size: 0.9em; }
 .message blockquote { border-left: 3px solid #adb5bd; padding-left: 0.8rem; margin-left: 0; color: #6c757d; }
